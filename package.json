@@ -32,14 +32,10 @@
     "eject": "react-scripts eject",
     "lint": "./node_modules/.bin/eslint src",
     "lint-fix": "./node_modules/.bin/eslint src --fix",
-    "cov": "./node_modules/.bin/react-scripts test --coverage"
+    "cov": "./node_modules/.bin/react-scripts test --coverage --collectCoverageFrom=src/** --collectCoverageFrom=!src/index.js"
   },
   "jest": {
     "coverageDirectory": "./coverage/",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}",
-      "!src/SearchBar/"
-    ]
+    "collectCoverage": true
   }
 }

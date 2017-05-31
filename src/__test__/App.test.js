@@ -1,12 +1,22 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import App from '../App'
+import { shallow } from 'enzyme'
 
-/* global describe it */
+/* global describe it beforeEach expect */
 
-describe('the app', () => {
-  it('renders without crashing', () => {
-    const div = document.createElement('div')
-    ReactDOM.render(<App />, div)
+describe('The App', () => {
+  let wrapper, app
+
+  beforeEach(() => {
+    wrapper = shallow(<App />)
+    app = wrapper.instance()
+  })
+
+  it('changes the state of this.state.creatingCharacter when onCreateCharacter called', () => {
+    expect(wrapper.state('creatingCharacter')).toBe(false)
+
+    app.onCreateCharacter()
+
+    expect(wrapper.state('creatingCharacter')).toBe(true)
   })
 })
