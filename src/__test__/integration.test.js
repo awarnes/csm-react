@@ -23,20 +23,22 @@ describe('integration test', () => {
         </MemoryRouter>)
     })
 
-    it('displays a landing page with a welcome message and entry button', () => {
+    it('displays a landing page with a welcome message and login/create buttons', () => {
       let message = wrapper.find('#welcome')
       let subtitle = wrapper.find('#subtitle')
-      let button = wrapper.find('#login-btn')
+      let button = wrapper.find('#loginAccount-btn')
+      let button2 = wrapper.find('#createAccount-btn')
 
       expect(message.text()).toEqual('Welcome to CSM!')
       expect(subtitle.text()).toEqual('Please choose an option below!')
       expect(button.exists()).toBe(true)
+      expect(button2.exists()).toBe(true)
     })
 
-    it('routes to the log-in page correctly', () => {
-      wrapper.find('Link').simulate('click', {button: 0})
+    it('routes to other pages when links are clicked', () => {
+      wrapper.find('#createAccount-link').simulate('click', {button: 0})
 
-      expect(wrapper.find('#login-btn').exists()).toBe(false)
+      expect(wrapper.find('#createAccount-btn').exists()).toBe(false)
     })
   })
 })

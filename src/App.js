@@ -23,7 +23,7 @@ export default class App extends Component {
       <Router>
         <div>
           <Route exact path='/' render={props => (<LandingPage {...props} />)} />
-          <Route path='/login' render={props => (<LogInPage {...props} onAccountNameInput={this.onAccountNameInput} />)} />
+          <Route path='/login_account' render={props => (<LogInPage {...props} onAccountNameInput={this.onAccountNameInput} />)} />
         </div>
       </Router>
     )
