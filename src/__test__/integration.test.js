@@ -38,7 +38,7 @@ describe('integration test', () => {
     it('routes to other pages when links are clicked', () => {
       wrapper.find('#createAccount-link').simulate('click', {button: 0})
 
-      expect(wrapper.find('#createAccount-btn').exists()).toBe(false)
+      expect(wrapper.find('#createAccount-link').exists()).toBe(false)
     })
   })
 })

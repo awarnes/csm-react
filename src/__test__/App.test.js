@@ -12,11 +12,19 @@ describe('The App', () => {
     app = wrapper.instance()
   })
 
-  it('updates the state of this.state.accountName when onAccountNameInput is called', () => {
-    expect(wrapper.state('accountName')).toEqual('')
+  it('updates the state of this.state.createAccount when onCreateAccountNameInput is called', () => {
+    expect(wrapper.state('createAccount')).toEqual('')
 
-    app.onAccountNameInput({target: {value: 'apple'}})
+    app.onCreateAccountNameInput({target: {value: 'apple'}})
 
-    expect(wrapper.state('accountName')).toEqual('apple')
+    expect(wrapper.state('createAccount')).toEqual('apple')
+  })
+
+  it('updates the state of this.state.loginAccount when onLoginAccountNameInput is called', () => {
+    expect(wrapper.state('loginAccount')).toEqual('')
+
+    app.onLoginAccountNameInput({target: {value: 'apple'}})
+
+    expect(wrapper.state('loginAccount')).toEqual('apple')
   })
 })

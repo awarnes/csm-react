@@ -2,23 +2,23 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button, FormControl } from 'react-bootstrap'
 
-export default class LogInPage extends Component {
+export default class CreateAccountPage extends Component {
   render () {
     return (
       <div>
-        <h1>Please enter your account name to continue!</h1>
+        <h1>Please enter an account name to continue!</h1>
         <FormControl
           type='text'
           placeholder='Enter Account Name...'
           onChange={this.props.onAccountNameInput}
           id='accountName-input'
           />
-        <Button type='button' id='loginAccount-btn'>Enter</Button>
+        <Button type='button' id='createAccount-btn'>Enter</Button>
       </div>
     )
   }
 }
 
-LogInPage.propTypes = {
+CreateAccountPage.propTypes = {
   onAccountNameInput: PropTypes.func
 }
