@@ -31,9 +31,13 @@ export default class App extends Component {
         <div>
           <Route exact path='/' render={props => (<LandingPage {...props} />)} />
           <Route path='/login_account'
-                 render={props => (<LogInPage {...props} onAccountNameInput={this.onLoginAccountNameInput} />)} />
+                 render={props => (<LogInPage {...props}
+                                              onAccountNameInput={this.onLoginAccountNameInput}
+                                              accountName={this.state.loginAccount}/>)} />
           <Route path='/create_account'
-                 render={props => (<CreateAccountPage {...props} onAccountNameInput={this.onCreateAccountNameInput} />)} />
+                 render={props => (<CreateAccountPage {...props}
+                                                      onAccountNameInput={this.onCreateAccountNameInput}
+                                                      accountName={this.state.createAccount} />)} />
         </div>
       </Router>
     )
