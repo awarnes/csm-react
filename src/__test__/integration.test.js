@@ -41,4 +41,27 @@ describe('integration test', () => {
       expect(wrapper.find('#createAccount-link').exists()).toBe(false)
     })
   })
+
+  describe('the log-in page', () => {
+    let wrapper
+
+    beforeEach(() => {
+      wrapper = mount(
+        <MemoryRouter>
+          <App />
+        </MemoryRouter>)
+
+      wrapper.find('#loginAccount-link').simulate('click', {button: 0})
+    })
+
+    it('allows a user to enter their account name, fetches their account information, sets it in state as this.state.activeAccount', () => {
+      expect(wrapper.state('activeAccount')).toEqual('')
+
+      wrapper.find('#accountName-input').simulate('change', {target: {value: 'John'}})
+
+      wrapper.find('#loginAccount-btn').simulate('click')
+
+      expect(wrapper.state('activeAccount')).toEqual('John')
+    })
+  })
 })

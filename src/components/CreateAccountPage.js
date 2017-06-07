@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { Button, FormControl } from 'react-bootstrap'
 
 export default class CreateAccountPage extends Component {
-
   // getValidationState () {
   //
   //   let checkAccount = this.props.accountName
@@ -33,7 +32,7 @@ export default class CreateAccountPage extends Component {
           onChange={this.props.onAccountNameInput}
           id='accountName-input'
           />
-        <Button type='button' id='createAccount-btn'>Enter</Button>
+        <Button type='button' id='createAccount-btn'>Create Account</Button>
       </div>
     )
   }
