@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button, FormControl, FormGroup } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 /* global fetch */
 
@@ -10,6 +11,7 @@ export default class LogInPage extends Component {
 
     this.getValidationState = this.getValidationState.bind(this)
     this.checkValidationState = this.checkValidationState.bind(this)
+    this.handleLogInClick = this.handleLogInClick.bind(this)
   }
 
   getValidationState () {
@@ -31,6 +33,14 @@ export default class LogInPage extends Component {
       return true
     } else {
       return false
+    }
+  }
+
+  handleLogInClick (e) {
+    if (this.checkValidationState()) {
+      e.preventDefault()
+    } else {
+      this.props.updateActiveAccount(this.props.accountName)
     }
   }
 
@@ -62,8 +72,11 @@ export default class LogInPage extends Component {
             value={this.props.accountName}
             />
           <FormControl.Feedback />
-          <Button type='button' id='loginAccount-btn' onClick={this.onLoginClick} disabled={this.checkValidationState()}>Log In</Button>
+          <Button type='button' id='loginAccount-btn' onClick={e => e.preventDefault()} disabled={this.checkValidationState()}>
+            <Link to={`/users/${this.props.accountName}/home`} onClick={this.handleLogInClick}>Log In</Link></Button>
         </FormGroup>
+
+        <Button type='button' id='quit-btn'><Link to="/">Quit</Link></Button>
       </div>
     )
   }
@@ -73,5 +86,6 @@ LogInPage.propTypes = {
   onAccountNameInput: PropTypes.func,
   accountName: PropTypes.string,
   updateDBAccounts: PropTypes.func,
-  dbAccounts: PropTypes.object
+  dbAccounts: PropTypes.object,
+  updateActiveAccount: PropTypes.func
 }
