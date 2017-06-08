@@ -9,7 +9,7 @@ global.fetch = fetch
 
 fetch.mockResponse(JSON.stringify(FAKE_SERVER_DATA))
 
-/* global describe it beforeEach expect fetch */
+/* global describe it beforeEach expect */
 
 describe('The App', () => {
   let wrapper, app

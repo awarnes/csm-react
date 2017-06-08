@@ -1,15 +1,24 @@
 import React from 'react'
 import CreateAccountPage from '../components/CreateAccountPage'
+import fetch from 'jest-fetch-mock'
+import { FAKE_SERVER_DATA } from '../test-data'
 import { shallow } from 'enzyme'
+
+global.fetch = fetch
+
+fetch.mockResponse(JSON.stringify(FAKE_SERVER_DATA))
 
 /* global it describe expect beforeEach jest */
 
-describe('Log In Page', () => {
-  let wrapper, callback
+describe('Create Account Page', () => {
+  let wrapper, callback, callback2, callback3
 
   beforeEach(() => {
     callback = jest.fn()
-    wrapper = shallow(<CreateAccountPage onAccountNameInput={callback} />)
+    callback2 = jest.fn()
+    callback3 = jest.fn()
+    wrapper = shallow(<CreateAccountPage onAccountNameInput={callback} accountName={'John'} updateDBAccounts={callback2}
+      dbAccounts={FAKE_SERVER_DATA.users} updateActiveAccount={callback3} />)
   })
 
   it('displays a text box and button', () => {
@@ -24,5 +33,19 @@ describe('Log In Page', () => {
     textbox.simulate('change', {target: {value: 'a'}})
 
     expect(callback.mock.calls).toEqual([[{'target': {'value': 'a'}}]])
+  })
+
+  it('validates that accountName is not in the database correctly', () => {
+    wrapper = shallow(<CreateAccountPage onAccountNameInput={callback} accountName={'Akon'} updateDBAccounts={callback2}
+      dbAccounts={FAKE_SERVER_DATA.users} updateActiveAccount={callback3} />)
+    let app = wrapper.instance()
+
+    expect(app.getValidationState()).toBe('success')
+  })
+
+  it('updates the activeAccount when login button/link is pressed', () => {
+    wrapper.find('#createAccount-link').simulate('click')
+
+    expect(callback3.mock.calls).toEqual([['John']])
   })
 })
