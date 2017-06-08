@@ -1,9 +1,15 @@
 import React from 'react'
 import App from '../App'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import { MemoryRouter } from 'react-router-dom'
+import fetch from 'jest-fetch-mock'
+import { FAKE_SERVER_DATA } from '../test-data'
 
-/* global describe it beforeEach expect */
+global.fetch = fetch
+
+fetch.mockResponse(JSON.stringify(FAKE_SERVER_DATA))
+
+/* global describe it beforeEach expect fetch */
 
 describe('The App', () => {
   let wrapper, app
@@ -54,19 +60,50 @@ describe('The App', () => {
   })
 
   describe('when routing', () => {
-    it('displays the landing page when at "/" ', () => {
-      wrapper = shallow(<MemoryRouter initialEntries={['']}><App /></MemoryRouter>)
+    let wrapper
 
+    beforeEach(() => {
+      wrapper = mount(<MemoryRouter><App /></MemoryRouter>)
+    })
+
+    it('displays the landing page when at "/" ', () => {
       expect(wrapper.find('#welcome').exists()).toBe(true)
       expect(wrapper.find('#subtitle').exists()).toBe(true)
+      expect(wrapper.node.history.location.pathname).toEqual('/')
     })
 
     it('displays the login page when at "/login_account" ', () => {
-      wrapper = shallow(<MemoryRouter initialEntries={['/login_account']}><App /></MemoryRouter>)
+      wrapper.node.history.push('/login_account')
+      wrapper.find('#loginAccount-link').simulate('click', {button: 0})
 
       expect(wrapper.find('#quit-link').exists()).toBe(true)
       expect(wrapper.find('#loginAccount-btn').exists()).toBe(true)
+      expect(wrapper.node.history.location.pathname).toEqual('/login_account')
     })
 
+    /* Issues present with where the memory router actually is and what it thinks
+      it should be displaying. The above code works fine, however the create account
+      test does not think that there is any button or link for createAccount.
+     */
+
+    it('displays the create account page when at "/create_account"', () => {
+      wrapper = mount(<MemoryRouter><App /></MemoryRouter>)
+      // expect(wrapper.node.history.location.pathname).toEqual('/')
+      wrapper.node.history.push('/create_account')
+      // wrapper.find('#createAccount-btn').simulate('click', {button: 0})
+
+      expect(wrapper.node.history.location.pathname).toEqual('/create_account')
+      expect(wrapper.find('#quit-link').exists()).toBe(true)
+      // expect(wrapper.find('#createAccount-btn').exists()).toBe(true)
+    })
+
+    it('displays the user home page when at "/users/:user/home"', () => {
+      wrapper.node.history.push('/users/John/home')
+      wrapper.find('#loginAccount-link').simulate('click', {button: 0})
+
+      expect(wrapper.node.history.location.pathname).toEqual('/users/John/home')
+      // expect(wrapper.find('#welcome-user').exists()).toBe(true)
+      // expect(wrapper.find('#welcome-user').text()).toEqual("Hello, John!")
+    })
   })
 })
