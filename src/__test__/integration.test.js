@@ -1,9 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from '../App'
-// import fetch from 'jest-fetch-mock'
+import fetch from 'jest-fetch-mock'
+import { FAKE_SERVER_DATA } from '../test-data'
 import { mount } from 'enzyme'
 import { MemoryRouter } from 'react-router-dom'
+
+global.fetch = fetch
+
+fetch.mockResponse(JSON.stringify(FAKE_SERVER_DATA.users))
 
 /* global it describe expect beforeEach */
 
@@ -18,9 +23,8 @@ describe('integration test', () => {
 
     beforeEach(() => {
       wrapper = mount(
-        <MemoryRouter>
-          <App />
-        </MemoryRouter>)
+        <App />
+        )
     })
 
     it('displays a landing page with a welcome message and login/create buttons', () => {
@@ -38,7 +42,7 @@ describe('integration test', () => {
     it('routes to other pages when links are clicked', () => {
       wrapper.find('#createAccount-link').simulate('click', {button: 0})
 
-      expect(wrapper.find('#createAccount-link').exists()).toBe(false)
+      expect(wrapper.find('#welcome').exists()).toBe(false)
     })
   })
 
@@ -47,21 +51,16 @@ describe('integration test', () => {
 
     beforeEach(() => {
       wrapper = mount(
-        <MemoryRouter>
+        <MemoryRouter initialEntries={['/login_account']}>
           <App />
-        </MemoryRouter>)
-
-      wrapper.find('#loginAccount-link').simulate('click', {button: 0})
+        </MemoryRouter>
+        )
     })
 
-    it('allows a user to enter their account name, fetches their account information, sets it in state as this.state.activeAccount', () => {
-      expect(wrapper.state('activeAccount')).toEqual('')
+    it('routes to different page when quit button is pressed', () => {
+      wrapper.find('#quit-link').simulate('click', {button: 0})
 
-      wrapper.find('#accountName-input').simulate('change', {target: {value: 'John'}})
-
-      wrapper.find('#loginAccount-btn').simulate('click')
-
-      expect(wrapper.state('activeAccount')).toEqual('John')
+      expect(wrapper.find('#quit-link').exists()).toBe(false)
     })
   })
 })

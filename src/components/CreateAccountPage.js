@@ -40,7 +40,7 @@ export default class LogInPage extends Component {
   createAccount () {
     let params = {
       method: 'PUT',
-      body: JSON.stringify({createdAt: new Date(), characters: ["no characters"]})
+      body: JSON.stringify({createdAt: new Date(), characters: ['no characters']})
     }
 
     fetch(`https://csm-5e.firebaseio.com/users/${this.props.accountName}.json`, params)
@@ -52,13 +52,9 @@ export default class LogInPage extends Component {
       })
   }
 
-  handleLogInClick (e) {
-    if (this.checkValidationState()) {
-      e.preventDefault()
-    } else {
-      this.createAccount()
-      this.props.updateActiveAccount(this.props.accountName)
-    }
+  handleLogInClick () {
+    this.createAccount()
+    this.props.updateActiveAccount(this.props.accountName)
   }
 
   componentWillMount () {
@@ -75,6 +71,8 @@ export default class LogInPage extends Component {
   }
 
   render () {
+    const linkStyle = this.checkValidationState() ? {pointerEvents: 'none'} : {}
+
     return (
       <div>
         <h1>Please enter your account name to continue!</h1>
@@ -90,10 +88,10 @@ export default class LogInPage extends Component {
             />
           <FormControl.Feedback />
           <Button type='button' id='createAccount-btn' onClick={e => e.preventDefault()} disabled={this.checkValidationState()}>
-            <Link to={`/users/${this.props.accountName}/home`} onClick={this.handleLogInClick}>Log In</Link></Button>
+            <Link id='createAccount-link' style={linkStyle} to={`/users/${this.props.accountName}/home`} onClick={this.handleLogInClick}>Log In</Link></Button>
         </FormGroup>
 
-        <Button type='button' id='quit-btn'><Link to="/">Quit</Link></Button>
+        <Button type='button' id='quit-btn'><Link id='quit-link' to='/'>Quit</Link></Button>
       </div>
     )
   }

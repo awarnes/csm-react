@@ -50,29 +50,29 @@ export default class App extends Component {
     return (
       <Router>
         <div>
-            <Route exact path='/' render={props => (<LandingPage {...props} />)} />
+          <Route exact path='/' render={props => (<LandingPage {...props} />)} />
 
-            <Route path='/users/:user/home'
-                   render={props => (<UserHome {...props}
-                     activeAccount={this.state.activeAccount}
-                     updateActiveAccountInfo={this.updateActiveAccountInfo}
-                     activeAccountInfo={this.state.activeAccountInfo} />)} />
+          <Route path='/users/:user/home'
+            render={props => (<UserHome {...props}
+              activeAccount={this.state.activeAccount}
+              updateActiveAccountInfo={this.updateActiveAccountInfo}
+              activeAccountInfo={this.state.activeAccountInfo} />)} />
 
-            <Route path='/login_account'
-              render={props => (<LogInPage {...props}
-                onAccountNameInput={this.onLoginAccountNameInput}
-                accountName={this.state.loginAccount}
-                updateDBAccounts={this.updateDBAccounts}
-                dbAccounts={this.state.dbAccounts}
-                updateActiveAccount={this.updateActiveAccount} />)} />
+          <Route path='/login_account'
+            render={props => (<LogInPage {...props}
+              onAccountNameInput={this.onLoginAccountNameInput}
+              accountName={this.state.loginAccount}
+              updateDBAccounts={this.updateDBAccounts}
+              dbAccounts={this.state.dbAccounts}
+              updateActiveAccount={this.updateActiveAccount} />)} />
 
-            <Route path='/create_account'
-              render={props => (<CreateAccountPage {...props}
-                onAccountNameInput={this.onCreateAccountNameInput}
-                accountName={this.state.createAccount}
-                updateDBAccounts={this.updateDBAccounts}
-                dbAccounts={this.state.dbAccounts}
-                updateActiveAccount={this.updateActiveAccount}/>)} />
+          <Route path='/create_account'
+            render={props => (<CreateAccountPage {...props}
+              onAccountNameInput={this.onCreateAccountNameInput}
+              accountName={this.state.createAccount}
+              updateDBAccounts={this.updateDBAccounts}
+              dbAccounts={this.state.dbAccounts}
+              updateActiveAccount={this.updateActiveAccount} />)} />
         </div>
       </Router>
     )
