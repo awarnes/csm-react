@@ -22,3 +22,8 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/*a, a:active, a:hover, a:visited, a:link {*/
+  /*text-decoration: none;*/
+  /*color: black;*/
+/*}*/

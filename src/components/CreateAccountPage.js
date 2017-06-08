@@ -12,6 +12,7 @@ export default class LogInPage extends Component {
     this.getValidationState = this.getValidationState.bind(this)
     this.checkValidationState = this.checkValidationState.bind(this)
     this.handleLogInClick = this.handleLogInClick.bind(this)
+    this.createAccount = this.createAccount.bind(this)
   }
 
   getValidationState () {
@@ -21,9 +22,9 @@ export default class LogInPage extends Component {
       return name === checkInfo
     })
 
-    if (found === -1) {
+    if (found !== -1 || checkInfo.length < 3) {
       return 'warning'
-    } else if (found !== -1) {
+    } else if (found === -1) {
       return 'success'
     }
   }
@@ -36,7 +37,23 @@ export default class LogInPage extends Component {
     }
   }
 
+  createAccount () {
+    let params = {
+      method: 'PUT',
+      body: JSON.stringify({createdAt: new Date(), characters: ['no characters']})
+    }
+
+    fetch(`https://csm-5e.firebaseio.com/users/${this.props.accountName}.json`, params)
+      .then((response) => {
+        return response.json()
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
   handleLogInClick () {
+    this.createAccount()
     this.props.updateActiveAccount(this.props.accountName)
   }
 
@@ -70,8 +87,8 @@ export default class LogInPage extends Component {
             value={this.props.accountName}
             />
           <FormControl.Feedback />
-          <Button type='button' id='loginAccount-btn' onClick={e => e.preventDefault()} disabled={this.checkValidationState()}>
-            <Link id='loginAccount-link' style={linkStyle} to={`/users/${this.props.accountName}/home`} onClick={this.handleLogInClick}>Log In</Link></Button>
+          <Button type='button' id='createAccount-btn' onClick={e => e.preventDefault()} disabled={this.checkValidationState()}>
+            <Link id='createAccount-link' style={linkStyle} to={`/users/${this.props.accountName}/home`} onClick={this.handleLogInClick}>Log In</Link></Button>
         </FormGroup>
 
         <Button type='button' id='quit-btn'><Link id='quit-link' to='/'>Quit</Link></Button>

@@ -1,9 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from '../App'
-// import fetch from 'jest-fetch-mock'
+import fetch from 'jest-fetch-mock'
+import { FAKE_SERVER_DATA } from '../test-data'
 import { mount } from 'enzyme'
 import { MemoryRouter } from 'react-router-dom'
+
+global.fetch = fetch
+
+fetch.mockResponse(JSON.stringify(FAKE_SERVER_DATA.users))
 
 /* global it describe expect beforeEach */
 
@@ -18,9 +23,8 @@ describe('integration test', () => {
 
     beforeEach(() => {
       wrapper = mount(
-        <MemoryRouter>
-          <App />
-        </MemoryRouter>)
+        <App />
+        )
     })
 
     it('displays a landing page with a welcome message and login/create buttons', () => {
@@ -38,7 +42,25 @@ describe('integration test', () => {
     it('routes to other pages when links are clicked', () => {
       wrapper.find('#createAccount-link').simulate('click', {button: 0})
 
-      expect(wrapper.find('#createAccount-btn').exists()).toBe(false)
+      expect(wrapper.find('#welcome').exists()).toBe(false)
+    })
+  })
+
+  describe('the log-in page', () => {
+    let wrapper
+
+    beforeEach(() => {
+      wrapper = mount(
+        <MemoryRouter initialEntries={['/login_account']}>
+          <App />
+        </MemoryRouter>
+        )
+    })
+
+    it('routes to different page when quit button is pressed', () => {
+      wrapper.find('#quit-link').simulate('click', {button: 0})
+
+      expect(wrapper.find('#quit-link').exists()).toBe(false)
     })
   })
 })

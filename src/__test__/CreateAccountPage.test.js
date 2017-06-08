@@ -1,5 +1,5 @@
 import React from 'react'
-import LogInPage from '../components/LogInPage'
+import CreateAccountPage from '../components/CreateAccountPage'
 import fetch from 'jest-fetch-mock'
 import { FAKE_SERVER_DATA } from '../test-data'
 import { shallow } from 'enzyme'
@@ -10,22 +10,21 @@ fetch.mockResponse(JSON.stringify(FAKE_SERVER_DATA))
 
 /* global it describe expect beforeEach jest */
 
-describe('Log In Page', () => {
-  let wrapper, callback, callback2, callback3, app
+describe('Create Account Page', () => {
+  let wrapper, callback, callback2, callback3
 
   beforeEach(() => {
     callback = jest.fn()
     callback2 = jest.fn()
     callback3 = jest.fn()
-    wrapper = shallow(<LogInPage onAccountNameInput={callback} accountName={'John'} updateDBAccounts={callback2}
+    wrapper = shallow(<CreateAccountPage onAccountNameInput={callback} accountName={'John'} updateDBAccounts={callback2}
       dbAccounts={FAKE_SERVER_DATA.users} updateActiveAccount={callback3} />)
-    app = wrapper.instance()
   })
 
   it('displays a text box and button', () => {
     expect(wrapper.find('#accountName-input').exists()).toBe(true)
 
-    expect(wrapper.find('#loginAccount-btn').exists()).toBe(true)
+    expect(wrapper.find('#createAccount-btn').exists()).toBe(true)
   })
 
   it('makes the correct call to update the text box as the user types', () => {
@@ -36,20 +35,16 @@ describe('Log In Page', () => {
     expect(callback.mock.calls).toEqual([[{'target': {'value': 'a'}}]])
   })
 
-  it('validates that accountName is in the database correctly', () => {
+  it('validates that accountName is not in the database correctly', () => {
+    wrapper = shallow(<CreateAccountPage onAccountNameInput={callback} accountName={'Akon'} updateDBAccounts={callback2}
+      dbAccounts={FAKE_SERVER_DATA.users} updateActiveAccount={callback3} />)
+    let app = wrapper.instance()
+
     expect(app.getValidationState()).toBe('success')
   })
 
-  it('validates that accountName is not in the database correctly', () => {
-    wrapper = shallow(<LogInPage onAccountNameInput={callback} accountName={'Akon'} updateDBAccounts={callback2}
-      dbAccounts={FAKE_SERVER_DATA.users} updateActiveAccount={callback3} />)
-    app = wrapper.instance()
-
-    expect(app.getValidationState()).toBe('warning')
-  })
-
   it('updates the activeAccount when login button/link is pressed', () => {
-    wrapper.find('#loginAccount-link').simulate('click')
+    wrapper.find('#createAccount-link').simulate('click')
 
     expect(callback3.mock.calls).toEqual([['John']])
   })
