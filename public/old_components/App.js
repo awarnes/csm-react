@@ -6,7 +6,7 @@ import BattleScreen from '../public/old_components/BattleScreen'
 // import FlairScreen from './components/FlairScreen'
 // import MainScreen from './components/MainScreen'
 
-const SKILLS = {acrobatics: [true, 'DEX' ],
+const SKILLS = {acrobatics: [true, 'DEX', 0],
   animal_handling: [false, 'WIS', 0.5],
   arcana: [true, 'INT', 0],
   athletics: [false, 'STR', 0.5],
