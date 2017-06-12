@@ -17,7 +17,7 @@ describe('Log In Page', () => {
     callback = jest.fn()
     callback2 = jest.fn()
     callback3 = jest.fn()
-    wrapper = shallow(<LogInPage onAccountNameInput={callback} accountName={'John'} updateDBAccounts={callback2}
+    wrapper = shallow(<LogInPage onAccountNameInput={callback} accountName={'John'} updateDbAccounts={callback2}
       dbAccounts={FAKE_SERVER_DATA.users} updateActiveAccount={callback3} />)
     app = wrapper.instance()
   })
@@ -41,7 +41,7 @@ describe('Log In Page', () => {
   })
 
   it('validates that accountName is not in the database correctly', () => {
-    wrapper = shallow(<LogInPage onAccountNameInput={callback} accountName={'Akon'} updateDBAccounts={callback2}
+    wrapper = shallow(<LogInPage onAccountNameInput={callback} accountName={'Akon'} updateDbAccounts={callback2}
       dbAccounts={FAKE_SERVER_DATA.users} updateActiveAccount={callback3} />)
     app = wrapper.instance()
 

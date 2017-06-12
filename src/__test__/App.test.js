@@ -38,9 +38,9 @@ describe('The App', () => {
   it('updates the state of this.state.dbAccounts when updateDBAccounts is called', () => {
     expect(wrapper.state('dbAccounts')).toEqual({})
 
-    app.updateDBAccounts({apple: 'john'})
+    app.updateDbAccounts()
 
-    expect(wrapper.state('dbAccounts')).toEqual({apple: 'john'})
+    expect(wrapper.state('dbAccounts')).toEqual({})
   })
 
   it('updates the state of this.state.activeAccount when updateActiveAccount is called', () => {
@@ -57,6 +57,34 @@ describe('The App', () => {
     app.updateActiveAccountInfo({apple: 'john'})
 
     expect(wrapper.state('activeAccountInfo')).toEqual({apple: 'john'})
+  })
+
+  it('updates the state of activeAccount and activeAccountInfo when clearActiveAccount is called', () => {
+    wrapper.setState({activeAccount: 'Blue', activeAccountInfo: {berry: 2}})
+
+    expect(wrapper.state('activeAccount')).toEqual('Blue')
+    expect(wrapper.state('activeAccountInfo')).toEqual({berry: 2})
+
+    app.clearActiveAccount()
+
+    expect(wrapper.state('activeAccount')).toEqual('')
+    expect(wrapper.state('activeAccountInfo')).toEqual({})
+  })
+
+  it('updates the state of this.state.characterName when onCharacterNameInput is called', () => {
+    expect(wrapper.state('characterName')).toEqual('')
+
+    app.onCharacterNameInput({target: {value: 'apple'}})
+
+    expect(wrapper.state('characterName')).toEqual('apple')
+  })
+
+  it('does not update the state of activeAccountInfo when createCharacter called if no information sent to database', () => {
+    wrapper.setState({activeAccountInfo: {j: 'apple'}})
+
+    app.createCharacter()
+
+    expect(wrapper.state('activeAccountInfo')).toEqual({j: 'apple'})
   })
 
   describe('when routing', () => {
@@ -88,13 +116,10 @@ describe('The App', () => {
 
     it('displays the create account page when at "/create_account"', () => {
       wrapper = mount(<MemoryRouter><App /></MemoryRouter>)
-      // expect(wrapper.node.history.location.pathname).toEqual('/')
       wrapper.node.history.push('/create_account')
-      // wrapper.find('#createAccount-btn').simulate('click', {button: 0})
 
       expect(wrapper.node.history.location.pathname).toEqual('/create_account')
       expect(wrapper.find('#quit-link').exists()).toBe(true)
-      // expect(wrapper.find('#createAccount-btn').exists()).toBe(true)
     })
 
     it('displays the user home page when at "/users/:user/home"', () => {
@@ -102,8 +127,6 @@ describe('The App', () => {
       wrapper.find('#loginAccount-link').simulate('click', {button: 0})
 
       expect(wrapper.node.history.location.pathname).toEqual('/users/John/home')
-      // expect(wrapper.find('#welcome-user').exists()).toBe(true)
-      // expect(wrapper.find('#welcome-user').text()).toEqual("Hello, John!")
     })
   })
 })
