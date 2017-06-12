@@ -6,6 +6,7 @@ import LandingPage from './components/LandingPage'
 import LogInPage from './components/LogInPage'
 import CreateAccountPage from './components/CreateAccountPage'
 import UserHome from './components/UserHome'
+import EditCharacter from './components/EditCharacter'
 
 /* global fetch */
 
@@ -102,21 +103,13 @@ export default class App extends Component {
       })
   }
 
+
+
   render () {
     return (
       <Router>
         <div>
           <Route exact path='/' render={props => (<LandingPage {...props} />)} />
-
-          <Route path='/users/:user/home'
-            render={props => (<UserHome {...props}
-              updateActiveAccountInfo={this.updateActiveAccountInfo}
-              updateActiveAccount={this.updateActiveAccount}
-              activeAccountInfo={this.state.activeAccountInfo}
-              clearActiveAccount={this.clearActiveAccount}
-              createCharacter={this.createCharacter}
-              onCharacterNameInput={this.onCharacterNameInput}
-              characterName={this.state.characterName} />)} />
 
           <Route path='/login_account'
             render={props => (<LogInPage {...props}
@@ -133,6 +126,18 @@ export default class App extends Component {
               updateDbAccounts={this.updateDbAccounts}
               dbAccounts={this.state.dbAccounts}
               updateActiveAccount={this.updateActiveAccount} />)} />
+
+          <Route path='/users/:user/home'
+            render={props => (<UserHome {...props}
+              updateActiveAccountInfo={this.updateActiveAccountInfo}
+              updateActiveAccount={this.updateActiveAccount}
+              activeAccountInfo={this.state.activeAccountInfo}
+              clearActiveAccount={this.clearActiveAccount}
+              createCharacter={this.createCharacter}
+              onCharacterNameInput={this.onCharacterNameInput}
+              characterName={this.state.characterName} />)} />
+
+          <Route path='/characters/:uid/edit' render={props => (<EditCharacter {...props} />)} />
         </div>
       </Router>
     )
