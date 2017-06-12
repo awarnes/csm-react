@@ -40,7 +40,7 @@ export default class LogInPage extends Component {
   createAccount () {
     let params = {
       method: 'PUT',
-      body: JSON.stringify({createdAt: new Date(), characters: ['no characters']})
+      body: JSON.stringify({createdAt: new Date(), characters: {}})
     }
 
     fetch(`https://csm-5e.firebaseio.com/users/${this.props.accountName}.json`, params)
@@ -58,16 +58,7 @@ export default class LogInPage extends Component {
   }
 
   componentWillMount () {
-    fetch('https://csm-5e.firebaseio.com/users.json')
-      .then((response) => {
-        return response.json()
-      })
-      .then((json) => {
-        this.props.updateDbAccounts(json)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    this.props.updateDbAccounts()
   }
 
   render () {

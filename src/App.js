@@ -35,8 +35,21 @@ export default class App extends Component {
     this.createCharacter = this.createCharacter.bind(this)
   }
 
-  updateDbAccounts (json) {
-    this.setState({dbAccounts: json})
+  updateDbAccounts () {
+    fetch(`${SERVER_ROOT}/users.json`)
+      .then((response) => {
+        return response.json()
+      })
+      .then((json) => {
+        if (json === null) {
+          this.setState({dbAccounts: {}})
+        } else {
+          this.setState({dbAccounts: json})
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   updateActiveAccount (account) {

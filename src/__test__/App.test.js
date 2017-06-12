@@ -38,9 +38,9 @@ describe('The App', () => {
   it('updates the state of this.state.dbAccounts when updateDBAccounts is called', () => {
     expect(wrapper.state('dbAccounts')).toEqual({})
 
-    app.updateDbAccounts({apple: 'john'})
+    app.updateDbAccounts()
 
-    expect(wrapper.state('dbAccounts')).toEqual({apple: 'john'})
+    expect(wrapper.state('dbAccounts')).toEqual({})
   })
 
   it('updates the state of this.state.activeAccount when updateActiveAccount is called', () => {

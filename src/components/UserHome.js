@@ -40,8 +40,13 @@ export default class UserHome extends Component {
         return response.json()
       })
       .then((json) => {
-        this.props.updateActiveAccount(this.props.match.params.user)
-        this.props.updateActiveAccountInfo(json.characters)
+        if (json === null) {
+          this.props.updateActiveAccount(this.props.match.params.user)
+          this.props.updateActiveAccountInfo({})
+        } else {
+          this.props.updateActiveAccount(this.props.match.params.user)
+          this.props.updateActiveAccountInfo(json.characters)
+        }
       })
       .catch((error) => {
         console.log(error)

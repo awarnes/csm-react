@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 import { Button, FormControl, FormGroup } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
-/* global fetch */
-
 export default class LogInPage extends Component {
   constructor (props) {
     super(props)
@@ -41,16 +39,7 @@ export default class LogInPage extends Component {
   }
 
   componentWillMount () {
-    fetch('https://csm-5e.firebaseio.com/users.json')
-      .then((response) => {
-        return response.json()
-      })
-      .then((json) => {
-        this.props.updateDbAccounts(json)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    this.props.updateDbAccounts()
   }
 
   render () {
