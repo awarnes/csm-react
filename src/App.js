@@ -7,6 +7,8 @@ import LogInPage from './components/LogInPage'
 import CreateAccountPage from './components/CreateAccountPage'
 import UserHome from './components/UserHome'
 
+import EditCharacter from './components/EditCharacter'
+
 /* global fetch */
 
 const SERVER_ROOT = 'https://csm-5e.firebaseio.com'
@@ -32,6 +34,8 @@ export default class App extends Component {
     this.updateActiveAccountInfo = this.updateActiveAccountInfo.bind(this)
     this.clearActiveAccount = this.clearActiveAccount.bind(this)
     this.onCharacterNameInput = this.onCharacterNameInput.bind(this)
+    this.updateActiveCharacter = this.updateActiveCharacter.bind(this)
+    this.updateAbilityScore = this.updateAbilityScore.bind(this)
     this.createCharacter = this.createCharacter.bind(this)
   }
 
@@ -76,6 +80,40 @@ export default class App extends Component {
     this.setState({characterName: event.target.value})
   }
 
+  updateAbilityScore (ability, score) {
+    let newScores = this.state.activeCharacter.hasOwnProperty('abilityScores')
+      ? Object.assign(this.state.activeCharacter.abilityScores, {[ability]: score})
+      : Object.assign({STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}, {[ability]: score})
+
+    const newActiveCharacter = Object.assign(this.state.activeCharacter, {abilityScores: newScores})
+    this.setState({activeCharacter: newActiveCharacter})
+
+    const putData = {
+      method: 'PUT',
+      body: JSON.stringify(this.state.activeCharacter)
+    }
+
+    fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  updateActiveCharacter (uid) {
+    this.setState({activeCharacterId: uid})
+
+    fetch(`${SERVER_ROOT}/characters/${uid}.json`)
+      .then((response) => {
+        return response.json()
+      })
+      .then((json) => {
+        this.setState({activeCharacter: json})
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
   createCharacter () {
     const postData = {
       method: 'POST',
@@ -108,16 +146,6 @@ export default class App extends Component {
         <div>
           <Route exact path='/' render={props => (<LandingPage {...props} />)} />
 
-          <Route path='/users/:user/home'
-            render={props => (<UserHome {...props}
-              updateActiveAccountInfo={this.updateActiveAccountInfo}
-              updateActiveAccount={this.updateActiveAccount}
-              activeAccountInfo={this.state.activeAccountInfo}
-              clearActiveAccount={this.clearActiveAccount}
-              createCharacter={this.createCharacter}
-              onCharacterNameInput={this.onCharacterNameInput}
-              characterName={this.state.characterName} />)} />
-
           <Route path='/login_account'
             render={props => (<LogInPage {...props}
               onAccountNameInput={this.onLoginAccountNameInput}
@@ -133,6 +161,23 @@ export default class App extends Component {
               updateDbAccounts={this.updateDbAccounts}
               dbAccounts={this.state.dbAccounts}
               updateActiveAccount={this.updateActiveAccount} />)} />
+
+          <Route path='/users/:user/home'
+            render={props => (<UserHome {...props}
+              updateActiveAccountInfo={this.updateActiveAccountInfo}
+              updateActiveAccount={this.updateActiveAccount}
+              activeAccountInfo={this.state.activeAccountInfo}
+              clearActiveAccount={this.clearActiveAccount}
+              createCharacter={this.createCharacter}
+              onCharacterNameInput={this.onCharacterNameInput}
+              characterName={this.state.characterName} />)} />
+
+          <Route path='/characters/:uid/edit'
+            render={props => (<EditCharacter {...props}
+              activeCharacter={this.state.activeCharacter}
+              activeAccount={this.state.activeAccount}
+              updateActiveCharacter={this.updateActiveCharacter}
+              updateAbilityScore={this.updateAbilityScore} />)} />
         </div>
       </Router>
     )

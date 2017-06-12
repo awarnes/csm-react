@@ -87,6 +87,32 @@ describe('The App', () => {
     expect(wrapper.state('activeAccountInfo')).toEqual({j: 'apple'})
   })
 
+  it('updates the state of activeCharacter and activeCharacterId when this.updateActiveCharacter is called', () => {
+    expect(wrapper.state('activeCharacter')).toEqual({})
+    expect(wrapper.state('activeCharacterId')).toEqual('')
+
+    app.updateActiveCharacter('12345')
+
+    expect(wrapper.state('activeCharacter')).toEqual({})
+    expect(wrapper.state('activeCharacterId')).toEqual('12345')
+  })
+
+  it('updates the ability scores for activeCharacter if no ability scores existed previously when this.updateAbilityScore is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple'}})
+
+    app.updateAbilityScore('STR', 10)
+
+    expect(wrapper.state().activeCharacter.abilityScores).toEqual({STR: 10, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8})
+  })
+
+  it('updates the ability scores for activeCharacter if the abilityScores object does exist when this.updateAbilityScore is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple', abilityScores: {STR: 10, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}}})
+
+    app.updateAbilityScore('STR', 9)
+
+    expect(wrapper.state().activeCharacter.abilityScores).toEqual({STR: 9, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8})
+  })
+
   describe('when routing', () => {
     let wrapper
 
