@@ -58,10 +58,13 @@ export default class UserHome extends Component {
       let charId = charIdMaker(entry[0])
       return <ListGroupItem id={charId} key={`char-${entry[0]}`}>{entry[1]}
         <Button id={`${charId}-edit-btn`} className='pull-right'>
-          <Link id={`${charId}-edit-link`} to={`/characters/${entry[0]}/edit`}>Edit!</Link>
+          <Link id={`${charId}-edit-link`}
+            to={`/characters/${entry[0]}/edit`}>Edit!</Link>
         </Button>
         <Button id={`${charId}-play-btn`} className='pull-right' disabled>
-          <Link id={`${charId}-play-link`} to={`/characters/${entry[0]}/play`} style={{pointerEvents: 'none'}}>Play!</Link>
+          <Link id={`${charId}-play-link`}
+            to={`/characters/${entry[0]}/play`}
+            style={{pointerEvents: 'none'}}>Play!</Link>
         </Button>
       </ListGroupItem>
     })

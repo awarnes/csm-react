@@ -6,6 +6,7 @@ import LandingPage from './components/LandingPage'
 import LogInPage from './components/LogInPage'
 import CreateAccountPage from './components/CreateAccountPage'
 import UserHome from './components/UserHome'
+
 import EditCharacter from './components/EditCharacter'
 
 /* global fetch */
@@ -33,6 +34,7 @@ export default class App extends Component {
     this.updateActiveAccountInfo = this.updateActiveAccountInfo.bind(this)
     this.clearActiveAccount = this.clearActiveAccount.bind(this)
     this.onCharacterNameInput = this.onCharacterNameInput.bind(this)
+    this.updateActiveCharacter = this.updateActiveCharacter.bind(this)
     this.createCharacter = this.createCharacter.bind(this)
   }
 
@@ -77,6 +79,19 @@ export default class App extends Component {
     this.setState({characterName: event.target.value})
   }
 
+  updateActiveCharacter (uid) {
+    fetch(`${SERVER_ROOT}/characters/${uid}.json`)
+      .then((response) => {
+        return response.json()
+      })
+      .then((json) => {
+        this.setState({activeCharacter: json})
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
   createCharacter () {
     const postData = {
       method: 'POST',
@@ -102,8 +117,6 @@ export default class App extends Component {
         console.log(error)
       })
   }
-
-
 
   render () {
     return (
@@ -137,7 +150,10 @@ export default class App extends Component {
               onCharacterNameInput={this.onCharacterNameInput}
               characterName={this.state.characterName} />)} />
 
-          <Route path='/characters/:uid/edit' render={props => (<EditCharacter {...props} />)} />
+          <Route path='/characters/:uid/edit'
+            render={props => (<EditCharacter {...props}
+              activeCharacter={this.state.activeCharacter}
+              updateActiveCharacter={this.updateActiveCharacter} />)} />
         </div>
       </Router>
     )
