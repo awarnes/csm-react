@@ -1,6 +1,6 @@
 import React from 'react'
 import EditCharacter from '../components/EditCharacter'
-import { MemoryRouter } from 'react-router-dom'
+// import { MemoryRouter } from 'react-router-dom'
 import fetch from 'jest-fetch-mock'
 import { FAKE_SERVER_DATA } from '../test-data'
 import { shallow } from 'enzyme'
@@ -19,6 +19,7 @@ describe('EditCharacter', () => {
     wrapper = shallow(<EditCharacter
       match={{params: {uid: 12345}}}
       activeCharacter={{charName: 'Apheir'}}
+      activeAccount='John'
       updateActiveCharacter={callback} />)
   })
 
@@ -42,6 +43,7 @@ describe('EditCharacter', () => {
       wrapper = shallow(<EditCharacter
         match={{params: {uid: 12345}}}
         activeCharacter={{charName: 'Apheir'}}
+        activeAccount='John'
         updateActiveCharacter={callback} />)
     })
 
@@ -66,6 +68,7 @@ describe('EditCharacter', () => {
       wrapper = shallow(<EditCharacter
         match={{params: {uid: 12345}}}
         activeCharacter={{charName: 'Apheir'}}
+        activeAccount='John'
         updateActiveCharacter={callback} />)
     })
 

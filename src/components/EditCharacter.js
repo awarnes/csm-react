@@ -22,6 +22,8 @@ export default class EditCharacter extends Component {
   }
 
   render () {
+    const abilityScores = this.props.activeCharacter.hasOwnProperty('abilityScores') ?
+      this.props.activeCharacter.abilityScores : {STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}
     return (
       <Grid>
         <Row>
@@ -37,7 +39,7 @@ export default class EditCharacter extends Component {
               <Button
                 type='button'
                 bsSize='large'
-                id='editAbilityScores-btn' disabled>
+                id='editAbilityScores-btn'>
                 <Link id='editAbilityScores-link' to={`${this.props.match.url}/AbilityScores`}>Ability Scores</Link></Button>
             </Row>
 
@@ -72,13 +74,15 @@ export default class EditCharacter extends Component {
               <Button
                 type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Finalize</Link></Button>
               <Button
-                type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Back</Link></Button>
+                type='button' bsSize='large'><Link to={`/users/${this.props.activeAccount}/home`}>Back</Link></Button>
             </Row>
           </Col>
 
           <Col id='editing-section' xs={4} sm={3}>
             <Well>
-              <Route path={`${this.props.match.url}/AbilityScores`} component={EditAbilityScores} />
+              <Route path={`${this.props.match.url}/AbilityScores`} render={props => (<EditAbilityScores {...props}
+                                                                                        abilityScores={abilityScores}
+                                                                                        updateAbilityScore={this.props.updateAbilityScore}/>)} />
             </Well>
           </Col>
 
@@ -91,5 +95,7 @@ export default class EditCharacter extends Component {
 EditCharacter.propTypes = {
   match: PropTypes.object,
   activeCharacter: PropTypes.object,
-  updateActiveCharacter: PropTypes.func
+  updateActiveCharacter: PropTypes.func,
+  activeAccount: PropTypes.string,
+  updateAbilityScore: PropTypes.func
 }

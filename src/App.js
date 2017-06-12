@@ -35,6 +35,7 @@ export default class App extends Component {
     this.clearActiveAccount = this.clearActiveAccount.bind(this)
     this.onCharacterNameInput = this.onCharacterNameInput.bind(this)
     this.updateActiveCharacter = this.updateActiveCharacter.bind(this)
+    this.updateAbilityScore = this.updateAbilityScore.bind(this)
     this.createCharacter = this.createCharacter.bind(this)
   }
 
@@ -77,6 +78,17 @@ export default class App extends Component {
 
   onCharacterNameInput (event) {
     this.setState({characterName: event.target.value})
+  }
+
+  updateAbilityScore (ability, score) {
+    let newScores = this.state.activeCharacter.hasOwnProperty('abilityScores') ?
+      Object.assign(this.state.activeCharacter.abilityScores, {[ability]: score}) :
+      Object.assign({STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}, {[ability]: score})
+
+    const newActiveCharacter = Object.assign(this.state.activeCharacter, {abilityScores: newScores})
+    this.setState({activeCharacter: newActiveCharacter})
+
+
   }
 
   updateActiveCharacter (uid) {
@@ -153,7 +165,9 @@ export default class App extends Component {
           <Route path='/characters/:uid/edit'
             render={props => (<EditCharacter {...props}
               activeCharacter={this.state.activeCharacter}
-              updateActiveCharacter={this.updateActiveCharacter} />)} />
+              activeAccount={this.state.activeAccount}
+              updateActiveCharacter={this.updateActiveCharacter}
+              updateAbilityScore={this.updateAbilityScore} />)} />
         </div>
       </Router>
     )
