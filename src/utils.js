@@ -1,3 +1,3 @@
 export function charIdMaker (uid) {
-  return `char-${uid}`
+  return `char-(${uid})`
 }

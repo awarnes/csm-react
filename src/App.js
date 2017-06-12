@@ -7,6 +7,8 @@ import LogInPage from './components/LogInPage'
 import CreateAccountPage from './components/CreateAccountPage'
 import UserHome from './components/UserHome'
 
+/* global fetch */
+
 const SERVER_ROOT = 'https://csm-5e.firebaseio.com'
 
 export default class App extends Component {
@@ -76,7 +78,7 @@ export default class App extends Component {
 
         let characterInfo = Object.assign(this.state.activeAccountInfo, {[charUid.name]: this.state.characterName})
         const putData = {
-        method: 'PUT',
+          method: 'PUT',
           body: JSON.stringify(characterInfo)
         }
 

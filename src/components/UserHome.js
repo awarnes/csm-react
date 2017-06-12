@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+
+import 'airbnb-js-shims' // to allow jest to understand Object.entries for parsing the character objects
+
 import { ListGroup, ListGroupItem, Button, Modal, FormControl } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { charIdMaker } from '../utils'
@@ -7,7 +10,7 @@ import { charIdMaker } from '../utils'
 /* global fetch */
 
 export default class UserHome extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       showModal: false
@@ -17,7 +20,6 @@ export default class UserHome extends Component {
     this.closeModal = this.closeModal.bind(this)
     this.createNewCharacter = this.createNewCharacter.bind(this)
   }
-
 
   openModal () {
     this.setState({showModal: true})
@@ -30,7 +32,6 @@ export default class UserHome extends Component {
   createNewCharacter () {
     this.closeModal()
     this.props.createCharacter()
-    this.forceUpdate()
   }
 
   componentWillMount () {
@@ -48,7 +49,7 @@ export default class UserHome extends Component {
   }
 
   render () {
-    let dispArray = Object.entries(this.props.activeAccountInfo).map((entry) => {
+    const dispArray = Object.entries(this.props.activeAccountInfo).map((entry) => {
       let charId = charIdMaker(entry[0])
       return <ListGroupItem id={charId} key={`char-${entry[0]}`}>{entry[1]}
         <Button id={`${charId}-edit-btn`} className='pull-right'>
@@ -59,6 +60,7 @@ export default class UserHome extends Component {
         </Button>
       </ListGroupItem>
     })
+
     return (
       <div>
         <h1 id='welcome-user'>Hello, {this.props.match.params.user}!</h1>
@@ -73,16 +75,16 @@ export default class UserHome extends Component {
           <Modal.Body>
             <h4>Please enter your character's name below, then click 'Create'!</h4>
             <FormControl
-              id="characterName"
-              type="text"
+              id='characterName'
+              type='text'
               onChange={this.props.onCharacterNameInput}
               value={this.props.characterName}
               placeholder="Please enter your character's name..."
             />
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.createNewCharacter}>Create!</Button>
-            <Button onClick={this.closeModal}>Close</Button>
+            <Button id='createNewCharacter-btn' onClick={this.createNewCharacter}>Create!</Button>
+            <Button id='closeModal-btn' onClick={this.closeModal}>Close</Button>
           </Modal.Footer>
         </Modal>
       </div>
