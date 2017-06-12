@@ -63,7 +63,7 @@ export default class LogInPage extends Component {
         return response.json()
       })
       .then((json) => {
-        this.props.updateDBAccounts(json)
+        this.props.updateDbAccounts(json)
       })
       .catch((error) => {
         console.log(error)
@@ -100,7 +100,7 @@ export default class LogInPage extends Component {
 LogInPage.propTypes = {
   onAccountNameInput: PropTypes.func,
   accountName: PropTypes.string,
-  updateDBAccounts: PropTypes.func,
+  updateDbAccounts: PropTypes.func,
   dbAccounts: PropTypes.object,
   updateActiveAccount: PropTypes.func
 }

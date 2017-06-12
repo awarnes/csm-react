@@ -7,6 +7,8 @@ import LogInPage from './components/LogInPage'
 import CreateAccountPage from './components/CreateAccountPage'
 import UserHome from './components/UserHome'
 
+const SERVER_ROOT = 'https://csm-5e.firebaseio.com'
+
 export default class App extends Component {
   constructor (props) {
     super(props)
@@ -15,18 +17,23 @@ export default class App extends Component {
       loginAccount: '',
       activeAccount: '',
       activeAccountInfo: {},
-      dbAccounts: {}
-
+      dbAccounts: {},
+      activeCharacterId: '',
+      activeCharacter: {},
+      characterName: ''
     }
 
     this.onLoginAccountNameInput = this.onLoginAccountNameInput.bind(this)
     this.onCreateAccountNameInput = this.onCreateAccountNameInput.bind(this)
-    this.updateDBAccounts = this.updateDBAccounts.bind(this)
+    this.updateDbAccounts = this.updateDbAccounts.bind(this)
     this.updateActiveAccount = this.updateActiveAccount.bind(this)
     this.updateActiveAccountInfo = this.updateActiveAccountInfo.bind(this)
+    this.clearActiveAccount = this.clearActiveAccount.bind(this)
+    this.onCharacterNameInput = this.onCharacterNameInput.bind(this)
+    this.createCharacter = this.createCharacter.bind(this)
   }
 
-  updateDBAccounts (json) {
+  updateDbAccounts (json) {
     this.setState({dbAccounts: json})
   }
 
@@ -46,6 +53,40 @@ export default class App extends Component {
     this.setState({createAccount: event.target.value})
   }
 
+  clearActiveAccount () {
+    this.setState({activeAccount: '', activeAccountInfo: {}})
+  }
+
+  onCharacterNameInput (event) {
+    this.setState({characterName: event.target.value})
+  }
+
+  createCharacter () {
+    const postData = {
+      method: 'POST',
+      body: JSON.stringify({charName: this.state.characterName})
+    }
+
+    fetch(`${SERVER_ROOT}/characters.json`, postData)
+      .then((response) => {
+        return response.json()
+      })
+      .then((charUid) => {
+        this.setState({activeCharacterId: charUid.name})
+
+        let characterInfo = Object.assign(this.state.activeAccountInfo, {[charUid.name]: this.state.characterName})
+        const putData = {
+        method: 'PUT',
+          body: JSON.stringify(characterInfo)
+        }
+
+        return fetch(`${SERVER_ROOT}/users/${this.state.activeAccount}/characters.json`, putData)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
   render () {
     return (
       <Router>
@@ -54,15 +95,19 @@ export default class App extends Component {
 
           <Route path='/users/:user/home'
             render={props => (<UserHome {...props}
-              activeAccount={this.state.activeAccount}
               updateActiveAccountInfo={this.updateActiveAccountInfo}
-              activeAccountInfo={this.state.activeAccountInfo} />)} />
+              updateActiveAccount={this.updateActiveAccount}
+              activeAccountInfo={this.state.activeAccountInfo}
+              clearActiveAccount={this.clearActiveAccount}
+              createCharacter={this.createCharacter}
+              onCharacterNameInput={this.onCharacterNameInput}
+              characterName={this.state.characterName} />)} />
 
           <Route path='/login_account'
             render={props => (<LogInPage {...props}
               onAccountNameInput={this.onLoginAccountNameInput}
               accountName={this.state.loginAccount}
-              updateDBAccounts={this.updateDBAccounts}
+              updateDbAccounts={this.updateDbAccounts}
               dbAccounts={this.state.dbAccounts}
               updateActiveAccount={this.updateActiveAccount} />)} />
 
@@ -70,7 +115,7 @@ export default class App extends Component {
             render={props => (<CreateAccountPage {...props}
               onAccountNameInput={this.onCreateAccountNameInput}
               accountName={this.state.createAccount}
-              updateDBAccounts={this.updateDBAccounts}
+              updateDbAccounts={this.updateDbAccounts}
               dbAccounts={this.state.dbAccounts}
               updateActiveAccount={this.updateActiveAccount} />)} />
         </div>
