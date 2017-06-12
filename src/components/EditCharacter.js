@@ -22,8 +22,8 @@ export default class EditCharacter extends Component {
   }
 
   render () {
-    const abilityScores = this.props.activeCharacter.hasOwnProperty('abilityScores') ?
-      this.props.activeCharacter.abilityScores : {STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}
+    const abilityScores = this.props.activeCharacter.hasOwnProperty('abilityScores')
+      ? this.props.activeCharacter.abilityScores : {STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}
     return (
       <Grid>
         <Row>
@@ -81,8 +81,8 @@ export default class EditCharacter extends Component {
           <Col id='editing-section' xs={4} sm={3}>
             <Well>
               <Route path={`${this.props.match.url}/AbilityScores`} render={props => (<EditAbilityScores {...props}
-                                                                                        abilityScores={abilityScores}
-                                                                                        updateAbilityScore={this.props.updateAbilityScore}/>)} />
+                abilityScores={abilityScores}
+                updateAbilityScore={this.props.updateAbilityScore} />)} />
             </Well>
           </Col>
 

@@ -81,17 +81,27 @@ export default class App extends Component {
   }
 
   updateAbilityScore (ability, score) {
-    let newScores = this.state.activeCharacter.hasOwnProperty('abilityScores') ?
-      Object.assign(this.state.activeCharacter.abilityScores, {[ability]: score}) :
-      Object.assign({STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}, {[ability]: score})
+    let newScores = this.state.activeCharacter.hasOwnProperty('abilityScores')
+      ? Object.assign(this.state.activeCharacter.abilityScores, {[ability]: score})
+      : Object.assign({STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}, {[ability]: score})
 
     const newActiveCharacter = Object.assign(this.state.activeCharacter, {abilityScores: newScores})
     this.setState({activeCharacter: newActiveCharacter})
 
+    const putData = {
+      method: 'PUT',
+      body: JSON.stringify(this.state.activeCharacter)
+    }
 
+    fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   updateActiveCharacter (uid) {
+    this.setState({activeCharacterId: uid})
+
     fetch(`${SERVER_ROOT}/characters/${uid}.json`)
       .then((response) => {
         return response.json()

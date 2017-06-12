@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+
+import 'airbnb-js-shims' // to allow jest to understand Object.entries for parsing the character objects
+
 import { Form, FormGroup, Col, Button, ButtonGroup, ControlLabel } from 'react-bootstrap'
 
 export default class EditAbilityScores extends Component {
@@ -10,6 +13,7 @@ export default class EditAbilityScores extends Component {
     this.pointsRemaining = this.pointsRemaining.bind(this)
     this.increaseScore = this.increaseScore.bind(this)
     this.decreaseScore = this.decreaseScore.bind(this)
+    this.resetScores = this.resetScores.bind(this)
   }
 
   pointsRemaining () {
@@ -41,7 +45,7 @@ export default class EditAbilityScores extends Component {
 
   increaseScore (ability) {
     let score = this.props.abilityScores[ability]
-    const cost = score === 14 ? 7 : score - 8
+    const cost = score === 14 ? 2 : ((score + 1) - 8) - (score - 8)
     if (this.pointsRemaining() - cost >= 0) {
       score += 1
       this.props.updateAbilityScore(ability, score)
@@ -49,10 +53,17 @@ export default class EditAbilityScores extends Component {
   }
 
   decreaseScore (ability) {
-    let score = this.props.abilityScores[ability]
-
-    score -= 1
+    let score = this.props.abilityScores[ability] - 1
     this.props.updateAbilityScore(ability, score)
+  }
+
+  resetScores () {
+    const abilities = ['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA']
+
+    abilities.map((ability) => {
+      this.props.updateAbilityScore(ability, 8)
+      return null
+    })
   }
 
   renderAbilityScorePackages () {
@@ -75,13 +86,13 @@ export default class EditAbilityScores extends Component {
               <Button
                 id={`${labelName}-increase`}
                 type='button'
-                onClick={() => {this.increaseScore(labelName)}}
+                onClick={() => { this.increaseScore(labelName) }}
                 disabled={this.checkChangeStatus(labelName, 'increase')}>+</Button>
 
               <Button
                 id={`${labelName}-decrease`}
                 type='button'
-                onClick={() => {this.decreaseScore(labelName)}}
+                onClick={() => { this.decreaseScore(labelName) }}
                 disabled={this.checkChangeStatus(labelName, 'decrease')}>-</Button>
             </ButtonGroup>
           </Col>
@@ -104,13 +115,14 @@ export default class EditAbilityScores extends Component {
               Points Remaining:
             </Col>
             <Col xs={6}>
-              <ControlLabel id="pointsRemaining">{this.pointsRemaining()}</ControlLabel>
+              <ControlLabel id='pointsRemaining'>{this.pointsRemaining()}</ControlLabel>
             </Col>
           </FormGroup>
         </Form>
         <Button
           type='button'
           id='reset-btn'
+          onClick={() => { this.resetScores() }}
         >Reset Scores</Button>
       </div>
     )
