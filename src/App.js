@@ -6,8 +6,9 @@ import LandingPage from './components/LandingPage'
 import LogInPage from './components/LogInPage'
 import CreateAccountPage from './components/CreateAccountPage'
 import UserHome from './components/UserHome'
-
 import EditCharacter from './components/EditCharacter'
+
+import { BASE_ABILITY_SCORES } from './utils'
 
 /* global fetch */
 
@@ -41,6 +42,7 @@ export default class App extends Component {
     this.updateSubrace = this.updateSubrace.bind(this)
     this.updateClass = this.updateClass.bind(this)
     this.updatePrestige = this.updatePrestige.bind(this)
+    this.updateBackground = this.updateBackground.bind(this)
 
     this.createCharacter = this.createCharacter.bind(this)
   }
@@ -91,7 +93,7 @@ export default class App extends Component {
     if (this.state.activeCharacter.hasOwnProperty('abilityScores')) {
       newScores = Object.assign(this.state.activeCharacter.abilityScores, {[ability]: score})
     } else {
-      newScores = Object.assign({STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}, {[ability]: score})
+      newScores = Object.assign(BASE_ABILITY_SCORES, {[ability]: score})
     }
 
     const newActiveCharacter = Object.assign(this.state.activeCharacter, {abilityScores: newScores})
@@ -111,9 +113,9 @@ export default class App extends Component {
   updateRace (race) {
     let newRace
     if (this.state.activeCharacter.hasOwnProperty('race')) {
-      newRace = Object.assign(this.state.activeCharacter, {race: race})
+      newRace = Object.assign({}, this.state.activeCharacter, {race})
     } else {
-      newRace = Object.assign({race: race})
+      newRace = Object.assign({race})
     }
 
     const newActiveCharacter = Object.assign(this.state.activeCharacter, newRace)
@@ -133,9 +135,9 @@ export default class App extends Component {
   updateSubrace (subrace) {
     let newSubrace
     if (this.state.activeCharacter.hasOwnProperty('subrace')) {
-      newSubrace = Object.assign(this.state.activeCharacter, {subrace: subrace})
+      newSubrace = Object.assign({}, this.state.activeCharacter, {subrace})
     } else {
-      newSubrace = Object.assign({subrace: subrace})
+      newSubrace = Object.assign({subrace})
     }
 
     const newActiveCharacter = Object.assign(this.state.activeCharacter, newSubrace)
@@ -155,9 +157,9 @@ export default class App extends Component {
   updateClass (klass) {
     let newClass
     if (this.state.activeCharacter.hasOwnProperty('klass')) {
-      newClass = Object.assign(this.state.activeCharacter, {klass: klass})
+      newClass = Object.assign({}, this.state.activeCharacter, {klass})
     } else {
-      newClass = Object.assign({klass: klass})
+      newClass = Object.assign({klass})
     }
 
     const newActiveCharacter = Object.assign(this.state.activeCharacter, newClass)
@@ -177,12 +179,34 @@ export default class App extends Component {
   updatePrestige (prestige) {
     let newPrestige
     if (this.state.activeCharacter.hasOwnProperty('prestige')) {
-      newPrestige = Object.assign(this.state.activeCharacter, {prestige: prestige})
+      newPrestige = Object.assign({}, this.state.activeCharacter, {prestige})
     } else {
-      newPrestige = Object.assign({prestige: prestige})
+      newPrestige = Object.assign({prestige})
     }
 
     const newActiveCharacter = Object.assign(this.state.activeCharacter, newPrestige)
+    this.setState({activeCharacter: newActiveCharacter})
+
+    const putData = {
+      method: 'PUT',
+      body: JSON.stringify(this.state.activeCharacter)
+    }
+
+    fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  updateBackground (background) {
+    let newBackground
+    if (this.state.activeCharacter.hasOwnProperty('background')) {
+      newBackground = Object.assign({}, this.state.activeCharacter, {background})
+    } else {
+      newBackground = Object.assign({background})
+    }
+
+    const newActiveCharacter = Object.assign(this.state.activeCharacter, newBackground)
     this.setState({activeCharacter: newActiveCharacter})
 
     const putData = {
@@ -279,6 +303,7 @@ export default class App extends Component {
               updateSubrace={this.updateSubrace}
               updateClass={this.updateClass}
               updatePrestige={this.updatePrestige}
+              updateBackground={this.updateBackground}
             />)} />
         </div>
       </Router>

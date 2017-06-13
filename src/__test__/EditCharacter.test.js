@@ -46,7 +46,8 @@ describe('EditCharacter', () => {
           race: 'Halfling',
           subrace: 'Lightfoot',
           klass: 'Fighter',
-          prestige: 'Champion'}}
+          prestige: 'Champion',
+          background: 'Acolyte'}}
         activeAccount='John'
         updateActiveCharacter={callback} />)
     })

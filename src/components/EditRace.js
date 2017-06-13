@@ -41,6 +41,8 @@ export default class EditRace extends Component {
 
     if (this.state.races[race].hasOwnProperty('subraces')) {
       this.openModal()
+    } else {
+      this.props.updateSubrace('')
     }
   }
 

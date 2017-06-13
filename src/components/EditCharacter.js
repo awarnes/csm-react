@@ -7,6 +7,9 @@ import { Link, Route } from 'react-router-dom'
 import EditAbilityScores from './EditAbilityScores'
 import EditRace from './EditRace'
 import EditClass from './EditClass'
+import EditBackground from './EditBackground'
+
+import { BASE_ABILITY_SCORES } from '../utils'
 
 export default class EditCharacter extends Component {
   constructor (props) {
@@ -24,12 +27,12 @@ export default class EditCharacter extends Component {
   }
 
   render () {
-    let abilityScores, activeCharacterRace, activeCharacterSubrace, activeCharacterClass, activeCharacterPrestige
+    let abilityScores, activeCharacterRace, activeCharacterSubrace, activeCharacterClass, activeCharacterPrestige, activeCharacterBackground
 
     if (this.props.activeCharacter.hasOwnProperty('abilityScores')) {
       abilityScores = this.props.activeCharacter.abilityScores
     } else {
-      abilityScores = {STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}
+      abilityScores = BASE_ABILITY_SCORES
     }
 
     if (this.props.activeCharacter.hasOwnProperty('race')) {
@@ -54,6 +57,12 @@ export default class EditCharacter extends Component {
       activeCharacterPrestige = this.props.activeCharacter.prestige
     } else {
       activeCharacterPrestige = ''
+    }
+
+    if (this.props.activeCharacter.hasOwnProperty('background')) {
+      activeCharacterBackground = this.props.activeCharacter.background
+    } else {
+      activeCharacterBackground = ''
     }
 
     return (
@@ -81,7 +90,7 @@ export default class EditCharacter extends Component {
               <Button
                 type='button' bsSize='large'><Link to={`${this.props.match.url}/Classes`}>Class</Link></Button>
               <Button
-                type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Background</Link></Button>
+                type='button' bsSize='large'><Link to={`${this.props.match.url}/Backgrounds`}>Background</Link></Button>
             </Row>
 
             <Row bsClass='text-center'>
@@ -127,6 +136,10 @@ export default class EditCharacter extends Component {
                 activeCharacterPrestige={activeCharacterPrestige}
                 updateClass={this.props.updateClass}
                 updatePrestige={this.props.updatePrestige} />)} />
+
+              <Route path={`${this.props.match.url}/Backgrounds`} render={props => (<EditBackground {...props}
+                activeCharacterBackground={activeCharacterBackground}
+                updateBackground={this.props.updateBackground} />)} />
             </Well>
           </Col>
 
@@ -145,5 +158,6 @@ EditCharacter.propTypes = {
   updateRace: PropTypes.func,
   updateSubrace: PropTypes.func,
   updateClass: PropTypes.func,
-  updatePrestige: PropTypes.func
+  updatePrestige: PropTypes.func,
+  updateBackground: PropTypes.func
 }
