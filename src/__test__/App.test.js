@@ -145,6 +145,38 @@ describe('The App', () => {
     expect(wrapper.state().activeCharacter.subrace).toEqual('Wood Elf')
   })
 
+  it('updates the class for activeCharacter if no class existed previously when this.updateClass is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple'}})
+
+    app.updateClass('Fighter')
+
+    expect(wrapper.state().activeCharacter.klass).toEqual('Fighter')
+  })
+
+  it('updates the class for activeCharacter if the class object does exist when this.updateClass is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple', klass: 'Fighter'}})
+
+    app.updateClass('Rogue')
+
+    expect(wrapper.state().activeCharacter.klass).toEqual('Rogue')
+  })
+
+  it('updates the prestige for activeCharacter if no prestige existed previously when this.updatePrestige is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple'}})
+
+    app.updatePrestige('Champion')
+
+    expect(wrapper.state().activeCharacter.prestige).toEqual('Champion')
+  })
+
+  it('updates the prestige for activeCharacter if the prestige object does exist when this.updatePrestige is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple', prestige: 'Champion'}})
+
+    app.updatePrestige('Eldritch Knight')
+
+    expect(wrapper.state().activeCharacter.prestige).toEqual('Eldritch Knight')
+  })
+
   describe('when routing', () => {
     let wrapper
 
