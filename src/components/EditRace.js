@@ -7,6 +7,9 @@ import { Button, OverlayTrigger, Tooltip, Modal } from 'react-bootstrap'
 
 /* global fetch */
 
+const SUCCESS_STYLE = 'success'
+const DEFAULT_STYLE = 'default'
+
 export default class EditRace extends Component {
   constructor (props) {
     super(props)
@@ -18,10 +21,11 @@ export default class EditRace extends Component {
 
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
-    this.renderRaceButtons = this.renderRaceButtons.bind(this)
-    this.renderSubraceButtons = this.renderSubraceButtons.bind(this)
     this.setRace = this.setRace.bind(this)
     this.setSubrace = this.setSubrace.bind(this)
+    this.checkButtonStyle = this.checkButtonStyle.bind(this)
+    this.renderRaceButtons = this.renderRaceButtons.bind(this)
+    this.renderSubraceButtons = this.renderSubraceButtons.bind(this)
   }
 
   openModal () {
@@ -46,14 +50,23 @@ export default class EditRace extends Component {
     this.closeModal()
   }
 
+  checkButtonStyle (property) {
+    if (this.props.activeCharacterRace === property || this.props.activeCharacterSubrace === property) {
+      return SUCCESS_STYLE
+    } else {
+      return DEFAULT_STYLE
+    }
+  }
 
   renderRaceButtons () {
     const raceButtons = Object.entries(this.state.races).map((entry) => {
-
       const tooltip = (<Tooltip id={`${entry[0]}-tooltip`}>{entry[1].desc}</Tooltip>)
 
-      return <OverlayTrigger key={`${entry[0]}-overlay`} placement="left" overlay={tooltip}>
-        <Button type="button" id={`${entry[0]}-btn`} onClick={() => {this.setRace(entry[0])}}>{entry[0]}</Button>
+      return <OverlayTrigger key={`${entry[0]}-overlay`} placement='left' overlay={tooltip}>
+        <Button type='button'
+          id={`${entry[0]}-btn`}
+          onClick={() => { this.setRace(entry[0]) }}
+          bsStyle={this.checkButtonStyle(entry[0])}>{entry[0]}</Button>
       </OverlayTrigger>
     })
 
@@ -61,18 +74,22 @@ export default class EditRace extends Component {
   }
 
   renderSubraceButtons () {
+    if (Object.keys(this.state.races).indexOf(this.props.activeCharacterRace) !== -1 && this.state.races[this.props.activeCharacterRace].hasOwnProperty('subraces')) {
+      const subraceButtons = Object.keys(this.state.subraces).filter((key) => {
+        return Object.keys(this.state.races[this.props.activeCharacterRace].subraces).indexOf(key) !== -1
+      }).map((entry) => {
+        const tooltip = (<Tooltip id={`${entry}-tooltip`}>{this.state.subraces[entry].desc}</Tooltip>)
 
-    const subraceButtons = Object.keys(this.state.subraces).filter((key) => {
-      return Object.keys(this.state.races[this.props.activeCharacterRace].subraces).indexOf(key) !== -1
-    }).map((entry) => {
-      const tooltip = (<Tooltip id={`${entry}-tooltip`}>{this.state.subraces[entry].desc}</Tooltip>)
+        return <OverlayTrigger key={`${entry}-overlay`} placement='left' overlay={tooltip}>
+          <Button type='button'
+            id={`${entry}-btn`}
+            onClick={() => { this.setSubrace(entry) }}
+            bsStyle={this.checkButtonStyle(entry)}>{entry}</Button>
+        </OverlayTrigger>
+      })
 
-      return <OverlayTrigger key={`${entry}-overlay`} placement="left" overlay={tooltip}>
-        <Button type="button" id={`${entry}-btn`} onClick={() => {this.setSubrace(entry)}}>{entry}</Button>
-      </OverlayTrigger>
-    })
-
-    return subraceButtons
+      return subraceButtons
+    }
   }
 
   componentWillMount () {
@@ -104,7 +121,9 @@ export default class EditRace extends Component {
       <div>
         <h4 id='raceTitle'>Choose your Race!</h4>
         <h6 id='raceSubtitle'>Your race determines how you were born into the world and what innate abilities you have.</h6>
-        {this.renderRaceButtons()}
+        <div id='raceButtons'>
+          {this.renderRaceButtons()}
+        </div>
 
         <Modal show={this.state.showModal} onHide={this.closeModal}>
           <Modal.Header closeButton>
@@ -124,6 +143,7 @@ export default class EditRace extends Component {
 
 EditRace.propTypes = {
   activeCharacterRace: PropTypes.string,
+  activeCharacterSubrace: PropTypes.string,
   updateRace: PropTypes.func,
   updateSubrace: PropTypes.func
 }

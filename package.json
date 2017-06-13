@@ -34,7 +34,7 @@
     "eject": "react-scripts eject",
     "lint": "./node_modules/.bin/eslint src",
     "lint-fix": "./node_modules/.bin/eslint src --fix",
-    "cov": "./node_modules/.bin/react-scripts test --coverage --collectCoverageFrom=src/** --collectCoverageFrom=!src/index.js --collectCoverageFrom=!src/test-data.js"
+    "cov": "./node_modules/.bin/react-scripts test --env=jsdom --coverage --collectCoverageFrom=src/** --collectCoverageFrom=!src/index.js --collectCoverageFrom=!src/test-data.js"
   },
   "jest": {
     "coverageDirectory": "./coverage/",

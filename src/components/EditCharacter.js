@@ -102,6 +102,7 @@ export default class EditCharacter extends Component {
               <Route path={`${this.props.match.url}/AbilityScores`} render={props => (<EditAbilityScores {...props}
                 abilityScores={abilityScores}
                 updateAbilityScore={this.props.updateAbilityScore} />)} />
+
               <Route path={`${this.props.match.url}/Races`} render={props => (<EditRace {...props}
                 activeCharacterRace={activeCharacterRace}
                 activeCharacterSubrace={activeCharacterSubrace}

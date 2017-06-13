@@ -109,12 +109,12 @@ export default class App extends Component {
   updateRace (race) {
     let newRace
     if (this.state.activeCharacter.hasOwnProperty('race')) {
-      newRace = Object.assign(this.state.activeCharacter.race, race)
+      newRace = Object.assign(this.state.activeCharacter, {race: race})
     } else {
       newRace = Object.assign({race: race})
     }
 
-    const newActiveCharacter = Object.assign(this.state.activeCharacter, {race: newRace})
+    const newActiveCharacter = Object.assign(this.state.activeCharacter, newRace)
     this.setState({activeCharacter: newActiveCharacter})
 
     const putData = {
@@ -131,12 +131,12 @@ export default class App extends Component {
   updateSubrace (subrace) {
     let newSubrace
     if (this.state.activeCharacter.hasOwnProperty('subrace')) {
-      newSubrace = Object.assign(this.state.activeCharacter.subrace, subrace)
+      newSubrace = Object.assign(this.state.activeCharacter, {subrace: subrace})
     } else {
       newSubrace = Object.assign({subrace: subrace})
     }
 
-    const newActiveCharacter = Object.assign(this.state.activeCharacter, {subrace: newSubrace})
+    const newActiveCharacter = Object.assign(this.state.activeCharacter, newSubrace)
     this.setState({activeCharacter: newActiveCharacter})
 
     const putData = {

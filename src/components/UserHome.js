@@ -108,5 +108,5 @@ UserHome.propTypes = {
   clearActiveAccount: PropTypes.func,
   createCharacter: PropTypes.func,
   onCharacterNameInput: PropTypes.func,
-  characterName: PropTypes.string,
+  characterName: PropTypes.string
 }
