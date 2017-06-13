@@ -39,6 +39,8 @@ export default class App extends Component {
     this.updateAbilityScore = this.updateAbilityScore.bind(this)
     this.updateRace = this.updateRace.bind(this)
     this.updateSubrace = this.updateSubrace.bind(this)
+    this.updateClass = this.updateClass.bind(this)
+    this.updatePrestige = this.updatePrestige.bind(this)
 
     this.createCharacter = this.createCharacter.bind(this)
   }
@@ -150,6 +152,50 @@ export default class App extends Component {
       })
   }
 
+  updateClass (klass) {
+    let newClass
+    if (this.state.activeCharacter.hasOwnProperty('klass')) {
+      newClass = Object.assign(this.state.activeCharacter, {klass: klass})
+    } else {
+      newClass = Object.assign({klass: klass})
+    }
+
+    const newActiveCharacter = Object.assign(this.state.activeCharacter, newClass)
+    this.setState({activeCharacter: newActiveCharacter})
+
+    const putData = {
+      method: 'PUT',
+      body: JSON.stringify(this.state.activeCharacter)
+    }
+
+    fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  updatePrestige (prestige) {
+    let newPrestige
+    if (this.state.activeCharacter.hasOwnProperty('prestige')) {
+      newPrestige = Object.assign(this.state.activeCharacter, {prestige: prestige})
+    } else {
+      newPrestige = Object.assign({prestige: prestige})
+    }
+
+    const newActiveCharacter = Object.assign(this.state.activeCharacter, newPrestige)
+    this.setState({activeCharacter: newActiveCharacter})
+
+    const putData = {
+      method: 'PUT',
+      body: JSON.stringify(this.state.activeCharacter)
+    }
+
+    fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
   updateActiveCharacter (uid) {
     this.setState({activeCharacterId: uid})
 
@@ -231,6 +277,8 @@ export default class App extends Component {
               updateAbilityScore={this.updateAbilityScore}
               updateRace={this.updateRace}
               updateSubrace={this.updateSubrace}
+              updateClass={this.updateClass}
+              updatePrestige={this.updatePrestige}
             />)} />
         </div>
       </Router>
