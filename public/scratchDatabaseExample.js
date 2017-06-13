@@ -49,7 +49,7 @@ export default {
       'Rock Gnome': {desc: 'Friends with machines.'},
     },
     klasses: {
-      Barbarian: {desc: 'A fierce warrior of primitive background who can enter a battle rage.', prestiges: {'Path of the Berzerker': true, 'Path of the Totem Warrior': true}},
+      Barbarian: {desc: 'A fierce warrior of primitive background who can enter a battle rage.', prestiges: {'Path of the Berserker': true, 'Path of the Totem Warrior': true}},
       Bard: {desc: 'An inspiring magician whose power echoes the music of creation.', prestiges: {'College of Lore': true, 'College of Valor': true}},
       Cleric: {desc: 'A priestly champion who wields divine magic in service of a higher power.', prestiges: {'Knowledge Domain': true, 'Life Domain': true, 'Light Domain': true, 'Nature Domain': true, 'Tempest Domain': true, 'Trickery Domain': true, 'War Domain': true}},
       Druid: {desc: 'A priest of the Old Faith, wielding the powers of nature and adopting animal forms', prestiges: {'Circle of the Land': true, 'Circle of the Moon': true}},
