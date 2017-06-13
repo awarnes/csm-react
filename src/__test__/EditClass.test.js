@@ -1,5 +1,5 @@
 import React from 'react'
-import Editclass from '../components/EditClass'
+import EditClass from '../components/EditClass'
 import fetch from 'jest-fetch-mock'
 import { FAKE_SERVER_DATA } from '../test-data'
 import { shallow } from 'enzyme'
@@ -17,7 +17,7 @@ describe('Editclass', () => {
     updateClassCallback = jest.fn()
     updatePrestigeCallback = jest.fn()
 
-    wrapper = shallow(<Editclass
+    wrapper = shallow(<EditClass
       activeCharacterClass='Fighter'
       activeCharacterPrestige='Champion'
       updateClass={updateClassCallback}
