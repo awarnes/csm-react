@@ -107,7 +107,7 @@ export default class EditAbilityScores extends Component {
     return (
       <div className='text-center'>
         <h4 id='abScoreTitle'>Choose Your Ability Scores</h4>
-        <h6 id='abScoreSubTitle'>Ability scores help determine what kind of adventurer you will be.</h6>
+        <h6 id='abScoreSubtitle'>Ability scores help determine what kind of adventurer you will be.</h6>
         {this.renderAbilityScorePackages()}
         <Form horizontal>
           <FormGroup controlId='pointsRemaining'>

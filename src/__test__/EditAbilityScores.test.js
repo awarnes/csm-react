@@ -23,7 +23,7 @@ describe('EditAbilityScores', () => {
 
   it('displays the title and subtitle', () => {
     expect(wrapper.find('#abScoreTitle').exists()).toBe(true)
-    expect(wrapper.find('#abScoreSubTitle').exists()).toBe(true)
+    expect(wrapper.find('#abScoreSubtitle').exists()).toBe(true)
   })
 
   it('displays all 6 ability packages (label, amount, up/down buttons) and the points form', () => {

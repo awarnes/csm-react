@@ -34,8 +34,12 @@ export default class App extends Component {
     this.updateActiveAccountInfo = this.updateActiveAccountInfo.bind(this)
     this.clearActiveAccount = this.clearActiveAccount.bind(this)
     this.onCharacterNameInput = this.onCharacterNameInput.bind(this)
+
     this.updateActiveCharacter = this.updateActiveCharacter.bind(this)
     this.updateAbilityScore = this.updateAbilityScore.bind(this)
+    this.updateRace = this.updateRace.bind(this)
+    this.updateSubrace = this.updateSubrace.bind(this)
+
     this.createCharacter = this.createCharacter.bind(this)
   }
 
@@ -81,11 +85,58 @@ export default class App extends Component {
   }
 
   updateAbilityScore (ability, score) {
-    let newScores = this.state.activeCharacter.hasOwnProperty('abilityScores')
-      ? Object.assign(this.state.activeCharacter.abilityScores, {[ability]: score})
-      : Object.assign({STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}, {[ability]: score})
+    let newScores
+    if (this.state.activeCharacter.hasOwnProperty('abilityScores')) {
+      newScores = Object.assign(this.state.activeCharacter.abilityScores, {[ability]: score})
+    } else {
+      newScores = Object.assign({STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}, {[ability]: score})
+    }
 
     const newActiveCharacter = Object.assign(this.state.activeCharacter, {abilityScores: newScores})
+    this.setState({activeCharacter: newActiveCharacter})
+
+    const putData = {
+      method: 'PUT',
+      body: JSON.stringify(this.state.activeCharacter)
+    }
+
+    fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  updateRace (race) {
+    let newRace
+    if (this.state.activeCharacter.hasOwnProperty('race')) {
+      newRace = Object.assign(this.state.activeCharacter.race, race)
+    } else {
+      newRace = Object.assign({race: race})
+    }
+
+    const newActiveCharacter = Object.assign(this.state.activeCharacter, {race: newRace})
+    this.setState({activeCharacter: newActiveCharacter})
+
+    const putData = {
+      method: 'PUT',
+      body: JSON.stringify(this.state.activeCharacter)
+    }
+
+    fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  updateSubrace (subrace) {
+    let newSubrace
+    if (this.state.activeCharacter.hasOwnProperty('subrace')) {
+      newSubrace = Object.assign(this.state.activeCharacter.subrace, subrace)
+    } else {
+      newSubrace = Object.assign({subrace: subrace})
+    }
+
+    const newActiveCharacter = Object.assign(this.state.activeCharacter, {subrace: newSubrace})
     this.setState({activeCharacter: newActiveCharacter})
 
     const putData = {
@@ -177,7 +228,10 @@ export default class App extends Component {
               activeCharacter={this.state.activeCharacter}
               activeAccount={this.state.activeAccount}
               updateActiveCharacter={this.updateActiveCharacter}
-              updateAbilityScore={this.updateAbilityScore} />)} />
+              updateAbilityScore={this.updateAbilityScore}
+              updateRace={this.updateRace}
+              updateSubrace={this.updateSubrace}
+            />)} />
         </div>
       </Router>
     )
