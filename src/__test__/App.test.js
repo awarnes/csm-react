@@ -113,6 +113,38 @@ describe('The App', () => {
     expect(wrapper.state().activeCharacter.abilityScores).toEqual({STR: 9, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8})
   })
 
+  it('updates the race for activeCharacter if no race existed previously when this.updateRace is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple'}})
+
+    app.updateRace('Human')
+
+    expect(wrapper.state().activeCharacter.race).toEqual('Human')
+  })
+
+  it('updates the race for activeCharacter if the race object does exist when this.updateRace is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple', race: 'Human'}})
+
+    app.updateRace('Halfling')
+
+    expect(wrapper.state().activeCharacter.race).toEqual('Halfling')
+  })
+
+  it('updates the subrace for activeCharacter if no subrace existed previously when this.updateSubrace is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple'}})
+
+    app.updateSubrace('Lightfoot')
+
+    expect(wrapper.state().activeCharacter.subrace).toEqual('Lightfoot')
+  })
+
+  it('updates the subrace for activeCharacter if the subrace object does exist when this.updateSubrace is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple', subrace: 'Lightfoot'}})
+
+    app.updateSubrace('Wood Elf')
+
+    expect(wrapper.state().activeCharacter.subrace).toEqual('Wood Elf')
+  })
+
   describe('when routing', () => {
     let wrapper
 

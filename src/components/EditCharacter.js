@@ -5,6 +5,7 @@ import { Grid, Row, Col, Button, Well } from 'react-bootstrap'
 import { Link, Route } from 'react-router-dom'
 
 import EditAbilityScores from './EditAbilityScores'
+import EditRace from './EditRace'
 
 export default class EditCharacter extends Component {
   constructor (props) {
@@ -22,8 +23,26 @@ export default class EditCharacter extends Component {
   }
 
   render () {
-    const abilityScores = this.props.activeCharacter.hasOwnProperty('abilityScores')
-      ? this.props.activeCharacter.abilityScores : {STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}
+    let abilityScores, activeCharacterRace, activeCharacterSubrace
+
+    if (this.props.activeCharacter.hasOwnProperty('abilityScores')) {
+      abilityScores = this.props.activeCharacter.abilityScores
+    } else {
+      abilityScores = {STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}
+    }
+
+    if (this.props.activeCharacter.hasOwnProperty('race')) {
+      activeCharacterRace = this.props.activeCharacter.race
+    } else {
+      activeCharacterRace = ''
+    }
+
+    if (this.props.activeCharacter.hasOwnProperty('subrace')) {
+      activeCharacterSubrace = this.props.activeCharacter.subrace
+    } else {
+      activeCharacterSubrace = ''
+    }
+
     return (
       <Grid>
         <Row>
@@ -45,7 +64,7 @@ export default class EditCharacter extends Component {
 
             <Row bsClass='text-center'>
               <Button
-                type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Race</Link></Button>
+                type='button' bsSize='large'><Link to={`${this.props.match.url}/Races`}>Race</Link></Button>
               <Button
                 type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Class</Link></Button>
               <Button
@@ -83,6 +102,12 @@ export default class EditCharacter extends Component {
               <Route path={`${this.props.match.url}/AbilityScores`} render={props => (<EditAbilityScores {...props}
                 abilityScores={abilityScores}
                 updateAbilityScore={this.props.updateAbilityScore} />)} />
+
+              <Route path={`${this.props.match.url}/Races`} render={props => (<EditRace {...props}
+                activeCharacterRace={activeCharacterRace}
+                activeCharacterSubrace={activeCharacterSubrace}
+                updateRace={this.props.updateRace}
+                updateSubrace={this.props.updateSubrace} />)} />
             </Well>
           </Col>
 
@@ -97,5 +122,7 @@ EditCharacter.propTypes = {
   activeCharacter: PropTypes.object,
   updateActiveCharacter: PropTypes.func,
   activeAccount: PropTypes.string,
-  updateAbilityScore: PropTypes.func
+  updateAbilityScore: PropTypes.func,
+  updateRace: PropTypes.func,
+  updateSubrace: PropTypes.func
 }
