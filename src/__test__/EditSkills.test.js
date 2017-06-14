@@ -1,6 +1,7 @@
 import React from 'react'
 import EditSkills from '../components/EditSkills'
 import { shallow } from 'enzyme'
+import { FAKE_BACKGROUNDS } from '../test-data'
 
 /* global it describe expect beforeEach */
 
@@ -9,7 +10,11 @@ describe('EditSkills', () => {
 
   beforeEach(() => {
     // updateSkillCallback = jest.fn()
-    wrapper = shallow(<EditSkills />)
+    wrapper = shallow(<EditSkills
+      dbBackgrounds={FAKE_BACKGROUNDS}
+      activeCharacterBackground={'Entertainer'}
+      activeCharacterSkills={['Acrobatics', 'Performance']}
+    />)
     app = wrapper.instance()
   })
 
@@ -38,7 +43,8 @@ describe('EditSkills', () => {
 
   it('updates the state of showModal when closeModal is called', () => {
     wrapper.setState({showModal: true})
-    expect(wrapper.state('showModal')).toBe(false)
+
+    expect(wrapper.state('showModal')).toBe(true)
 
     app.closeModal()
 
