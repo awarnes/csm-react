@@ -8,6 +8,7 @@ import EditAbilityScores from './EditAbilityScores'
 import EditRace from './EditRace'
 import EditClass from './EditClass'
 import EditBackground from './EditBackground'
+import EditSkills from './EditSkills'
 
 import { BASE_ABILITY_SCORES } from '../utils'
 
@@ -27,7 +28,7 @@ export default class EditCharacter extends Component {
   }
 
   render () {
-    let abilityScores, activeCharacterRace, activeCharacterSubrace, activeCharacterClass, activeCharacterPrestige, activeCharacterBackground
+    let abilityScores, activeCharacterRace, activeCharacterSubrace, activeCharacterClass, activeCharacterPrestige, activeCharacterBackground, activeCharacterSkills
 
     if (this.props.activeCharacter.hasOwnProperty('abilityScores')) {
       abilityScores = this.props.activeCharacter.abilityScores
@@ -65,6 +66,12 @@ export default class EditCharacter extends Component {
       activeCharacterBackground = ''
     }
 
+    if (this.props.activeCharacter.hasOwnProperty('skills')) {
+      activeCharacterSkills = this.props.activeCharacter.skills
+    } else {
+      activeCharacterSkills = []
+    }
+
     return (
       <Grid>
         <Row>
@@ -95,7 +102,7 @@ export default class EditCharacter extends Component {
 
             <Row bsClass='text-center'>
               <Button
-                type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Skills</Link></Button>
+                type='button' bsSize='large'><Link to={`${this.props.match.url}/Skills`}>Skills</Link></Button>
               <Button
                 type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Spells</Link></Button>
               <Button
@@ -129,17 +136,32 @@ export default class EditCharacter extends Component {
                 activeCharacterRace={activeCharacterRace}
                 activeCharacterSubrace={activeCharacterSubrace}
                 updateRace={this.props.updateRace}
-                updateSubrace={this.props.updateSubrace} />)} />
+                updateSubrace={this.props.updateSubrace}
+                dbRaces={this.props.dbRaces}
+                dbSubraces={this.props.dbSubraces} />)} />
 
               <Route path={`${this.props.match.url}/Classes`} render={props => (<EditClass {...props}
                 activeCharacterClass={activeCharacterClass}
                 activeCharacterPrestige={activeCharacterPrestige}
                 updateClass={this.props.updateClass}
-                updatePrestige={this.props.updatePrestige} />)} />
+                updatePrestige={this.props.updatePrestige}
+                dbCharacterClasses={this.props.dbCharacterClasses}
+                dbPrestiges={this.props.dbPrestiges} />)} />
 
               <Route path={`${this.props.match.url}/Backgrounds`} render={props => (<EditBackground {...props}
                 activeCharacterBackground={activeCharacterBackground}
-                updateBackground={this.props.updateBackground} />)} />
+                updateBackground={this.props.updateBackground}
+                dbBackgrounds={this.props.dbBackgrounds}/>)} />
+
+              <Route path={`${this.props.match.url}/Skills`} render={props => (<EditSkills {...props}
+                activeCharacterBackground={activeCharacterBackground}
+                activeCharacterClass={activeCharacterClass}
+                activeCharacterSkills={activeCharacterSkills}
+                dbBackgrounds={this.props.dbBackgrounds}
+                dbCharacterClasses={this.props.dbCharacterClasses}
+                dbSkills={this.props.dbSkills}
+                updateSkill={this.props.updateSkill} />)} />
+
             </Well>
           </Col>
 
@@ -159,5 +181,11 @@ EditCharacter.propTypes = {
   updateSubrace: PropTypes.func,
   updateClass: PropTypes.func,
   updatePrestige: PropTypes.func,
-  updateBackground: PropTypes.func
+  updateBackground: PropTypes.func,
+  dbCharacterClasses: PropTypes.object,
+  dbPrestiges: PropTypes.object,
+  dbRaces: PropTypes.object,
+  dbSubraces: PropTypes.object,
+  dbSkills: PropTypes.object,
+  dbBackgrounds: PropTypes.object
 }

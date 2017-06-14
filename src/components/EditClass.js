@@ -15,8 +15,6 @@ export default class EditClass extends Component {
     super(props)
     this.state = {
       showModal: false,
-      klasses: {},
-      prestiges: {}
     }
 
     this.openModal = this.openModal.bind(this)
@@ -57,7 +55,7 @@ export default class EditClass extends Component {
   }
 
   renderClassButtons () {
-    const classButtons = Object.entries(this.state.klasses).map((entry) => {
+    const classButtons = Object.entries(this.props.dbCharacterClasses).map((entry) => {
       return <Button type='button'
         id={`${entry[0]}-btn`}
         key={`${entry[0]}-btn`}
@@ -69,9 +67,9 @@ export default class EditClass extends Component {
   }
 
   renderPrestigeButtons () {
-    if (Object.keys(this.state.klasses).indexOf(this.props.activeCharacterClass) !== -1) {
-      const prestigeButtons = Object.keys(this.state.prestiges).filter((key) => {
-        return Object.keys(this.state.klasses[this.props.activeCharacterClass].prestiges).indexOf(key) !== -1
+    if (Object.keys(this.props.dbCharacterClasses).indexOf(this.props.activeCharacterClass) !== -1) {
+      const prestigeButtons = Object.keys(this.props.dbPrestiges).filter((key) => {
+        return Object.keys(this.props.dbCharacterClasses[this.props.activeCharacterClass].prestiges).indexOf(key) !== -1
       }).map((entry) => {
         return <Button type='button'
           id={`${entry}-btn`}
@@ -82,30 +80,6 @@ export default class EditClass extends Component {
 
       return prestigeButtons
     }
-  }
-
-  componentWillMount () {
-    fetch('https://csm-5e.firebaseio.com/klasses.json')
-      .then((response) => {
-        return response.json()
-      })
-      .then((json) => {
-        this.setState({klasses: json})
-      })
-      .catch((error) => {
-        console.log('Classes: ' + error)
-      })
-
-    fetch('https://csm-5e.firebaseio.com/prestiges.json')
-      .then((response) => {
-        return response.json()
-      })
-      .then((json) => {
-        this.setState({prestiges: json})
-      })
-      .catch((error) => {
-        console.log('Prestiges: ' + error)
-      })
   }
 
   render () {
@@ -137,5 +111,7 @@ EditClass.propTypes = {
   activeCharacterClass: PropTypes.string,
   activeCharacterPrestige: PropTypes.string,
   updateClass: PropTypes.func,
-  updatePrestige: PropTypes.func
+  updatePrestige: PropTypes.func,
+  dbCharacterClasses: PropTypes.object,
+  dbPrestiges: PropTypes.object
 }

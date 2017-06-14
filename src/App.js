@@ -25,7 +25,13 @@ export default class App extends Component {
       dbAccounts: {},
       activeCharacterId: '',
       activeCharacter: {},
-      characterName: ''
+      characterName: '',
+      dbBackgrounds: {},
+      dbSkills: {},
+      dbCharacterClasses: {},
+      dbPrestiges: {},
+      dbRaces: {},
+      dbSubraces: {}
     }
 
     this.onLoginAccountNameInput = this.onLoginAccountNameInput.bind(this)
@@ -261,6 +267,74 @@ export default class App extends Component {
       })
   }
 
+  componentWillMount () {
+    fetch('https://csm-5e.firebaseio.com/backgrounds.json')
+      .then((response) => {
+        return response.json()
+      })
+      .then((backgrounds) => {
+        this.setState({dbBackgrounds: backgrounds})
+      })
+      .catch((error) => {
+        console.log('Backgrounds: ' + error)
+      })
+
+    fetch('https://csm-5e.firebaseio.com/skills.json')
+      .then((response) => {
+        return response.json()
+      })
+      .then((skills) => {
+        this.setState({dbSkills: skills})
+      })
+      .catch((error) => {
+        console.log('Skills: ' + error)
+      })
+
+    fetch('https://csm-5e.firebaseio.com/races.json')
+      .then((response) => {
+        return response.json()
+      })
+      .then((races) => {
+        this.setState({dbRaces: races})
+      })
+      .catch((error) => {
+        console.log('Races: ' + error)
+      })
+
+    fetch('https://csm-5e.firebaseio.com/subraces.json')
+      .then((response) => {
+        return response.json()
+      })
+      .then((subraces) => {
+        this.setState({dbSubraces: subraces})
+      })
+      .catch((error) => {
+        console.log('Subraces: ' + error)
+      })
+
+    fetch('https://csm-5e.firebaseio.com/klasses.json')
+      .then((response) => {
+        return response.json()
+      })
+      .then((characterClasses) => {
+        this.setState({dbCharacterClasses: characterClasses})
+      })
+      .catch((error) => {
+        console.log('Classes: ' + error)
+      })
+
+    fetch('https://csm-5e.firebaseio.com/prestiges.json')
+      .then((response) => {
+        return response.json()
+      })
+      .then((prestiges) => {
+        this.setState({dbPrestiges: prestiges})
+      })
+      .catch((error) => {
+        console.log('Prestiges: ' + error)
+      })
+  }
+
   render () {
     return (
       <Router>
@@ -304,6 +378,12 @@ export default class App extends Component {
               updateClass={this.updateClass}
               updatePrestige={this.updatePrestige}
               updateBackground={this.updateBackground}
+              dbCharacterClasses={this.state.dbCharacterClasses}
+              dbPrestiges={this.state.dbPrestiges}
+              dbRaces={this.state.dbRaces}
+              dbSubraces={this.state.dbSubraces}
+              dbSkills={this.state.dbSkills}
+              dbBackgrounds={this.state.dbBackgrounds}
             />)} />
         </div>
       </Router>
