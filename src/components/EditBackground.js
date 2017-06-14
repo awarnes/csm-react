@@ -5,8 +5,6 @@ import 'airbnb-js-shims' // to allow jest to understand Object.entries for parsi
 
 import { Button } from 'react-bootstrap'
 
-/* global fetch */
-
 const SUCCESS_STYLE = 'success'
 const DEFAULT_STYLE = 'default'
 

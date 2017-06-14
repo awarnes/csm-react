@@ -19,6 +19,7 @@ export default class UserHome extends Component {
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.createNewCharacter = this.createNewCharacter.bind(this)
+    this.renderCharacters = this.renderCharacters.bind(this)
   }
 
   openModal () {
@@ -32,6 +33,25 @@ export default class UserHome extends Component {
   createNewCharacter () {
     this.closeModal()
     this.props.createCharacter()
+  }
+
+  renderCharacters () {
+    const dispArray = Object.entries(this.props.activeAccountInfo).map((entry) => {
+      let charId = charIdMaker(entry[0])
+      return <ListGroupItem id={charId} key={`char-${entry[0]}`}>{entry[1]}
+        <Button id={`${charId}-edit-btn`} className='pull-right'>
+          <Link id={`${charId}-edit-link`}
+            to={`/characters/${entry[0]}/edit`}>Edit!</Link>
+        </Button>
+        <Button id={`${charId}-play-btn`} className='pull-right' disabled>
+          <Link id={`${charId}-play-link`}
+            to={`/characters/${entry[0]}/play`}
+            style={{pointerEvents: 'none'}}>Play!</Link>
+        </Button>
+      </ListGroupItem>
+    })
+
+    return dispArray
   }
 
   componentWillMount () {
@@ -54,25 +74,10 @@ export default class UserHome extends Component {
   }
 
   render () {
-    const dispArray = Object.entries(this.props.activeAccountInfo).map((entry) => {
-      let charId = charIdMaker(entry[0])
-      return <ListGroupItem id={charId} key={`char-${entry[0]}`}>{entry[1]}
-        <Button id={`${charId}-edit-btn`} className='pull-right'>
-          <Link id={`${charId}-edit-link`}
-            to={`/characters/${entry[0]}/edit`}>Edit!</Link>
-        </Button>
-        <Button id={`${charId}-play-btn`} className='pull-right' disabled>
-          <Link id={`${charId}-play-link`}
-            to={`/characters/${entry[0]}/play`}
-            style={{pointerEvents: 'none'}}>Play!</Link>
-        </Button>
-      </ListGroupItem>
-    })
-
     return (
       <div>
         <h1 id='welcome-user'>Hello, {this.props.match.params.user}!</h1>
-        <ListGroup>{dispArray}</ListGroup>
+        <ListGroup>{this.renderCharacters()}</ListGroup>
         <Button id='createCharacter-btn' onClick={this.openModal}>Create A New Character</Button>
         <Button id='quit-btn'><Link id='quit-link' to='/' onClick={this.props.clearActiveAccount}>Quit</Link></Button>
 

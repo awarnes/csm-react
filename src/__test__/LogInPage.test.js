@@ -1,12 +1,12 @@
 import React from 'react'
 import LogInPage from '../components/LogInPage'
 import fetch from 'jest-fetch-mock'
-import { FAKE_SERVER_DATA } from '../test-data'
+import { FAKE_USERS } from '../test-data'
 import { shallow } from 'enzyme'
 
 global.fetch = fetch
 
-fetch.mockResponse(JSON.stringify(FAKE_SERVER_DATA))
+fetch.mockResponse(JSON.stringify(FAKE_USERS))
 
 /* global it describe expect beforeEach jest */
 
@@ -18,7 +18,7 @@ describe('Log In Page', () => {
     callback2 = jest.fn()
     callback3 = jest.fn()
     wrapper = shallow(<LogInPage onAccountNameInput={callback} accountName={'John'} updateDbAccounts={callback2}
-      dbAccounts={FAKE_SERVER_DATA.users} updateActiveAccount={callback3} />)
+      dbAccounts={FAKE_USERS} updateActiveAccount={callback3} />)
     app = wrapper.instance()
   })
 
@@ -42,7 +42,7 @@ describe('Log In Page', () => {
 
   it('validates that accountName is not in the database correctly', () => {
     wrapper = shallow(<LogInPage onAccountNameInput={callback} accountName={'Akon'} updateDbAccounts={callback2}
-      dbAccounts={FAKE_SERVER_DATA.users} updateActiveAccount={callback3} />)
+      dbAccounts={FAKE_USERS} updateActiveAccount={callback3} />)
     app = wrapper.instance()
 
     expect(app.getValidationState()).toBe('warning')

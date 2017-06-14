@@ -3,11 +3,11 @@ import App from '../App'
 import { shallow, mount } from 'enzyme'
 import { MemoryRouter } from 'react-router-dom'
 import fetch from 'jest-fetch-mock'
-import { FAKE_SERVER_DATA } from '../test-data'
+import { FAKE_USERS } from '../test-data'
 
 global.fetch = fetch
 
-fetch.mockResponse(JSON.stringify(FAKE_SERVER_DATA))
+fetch.mockResponse(JSON.stringify(FAKE_USERS))
 
 /* global describe it beforeEach expect */
 

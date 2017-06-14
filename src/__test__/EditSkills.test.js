@@ -1,12 +1,6 @@
 import React from 'react'
 import EditSkills from '../components/EditSkills'
-import fetch from 'jest-fetch-mock'
-import { FAKE_SERVER_DATA } from '../test-data'
 import { shallow } from 'enzyme'
-
-global.fetch = fetch
-
-fetch.mockResponse(JSON.stringify(FAKE_SERVER_DATA))
 
 /* global it describe expect beforeEach */
 

@@ -5,8 +5,6 @@ import 'airbnb-js-shims' // to allow jest to understand Object.entries for parsi
 
 import { Button, Modal } from 'react-bootstrap'
 
-/* global fetch */
-
 const SUCCESS_STYLE = 'success'
 const DEFAULT_STYLE = 'default'
 
@@ -14,7 +12,7 @@ export default class EditClass extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      showModal: false,
+      showModal: false
     }
 
     this.openModal = this.openModal.bind(this)

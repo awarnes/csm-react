@@ -151,7 +151,7 @@ export default class EditCharacter extends Component {
               <Route path={`${this.props.match.url}/Backgrounds`} render={props => (<EditBackground {...props}
                 activeCharacterBackground={activeCharacterBackground}
                 updateBackground={this.props.updateBackground}
-                dbBackgrounds={this.props.dbBackgrounds}/>)} />
+                dbBackgrounds={this.props.dbBackgrounds} />)} />
 
               <Route path={`${this.props.match.url}/Skills`} render={props => (<EditSkills {...props}
                 activeCharacterBackground={activeCharacterBackground}
@@ -182,6 +182,7 @@ EditCharacter.propTypes = {
   updateClass: PropTypes.func,
   updatePrestige: PropTypes.func,
   updateBackground: PropTypes.func,
+  updateSkill: PropTypes.func,
   dbCharacterClasses: PropTypes.object,
   dbPrestiges: PropTypes.object,
   dbRaces: PropTypes.object,
