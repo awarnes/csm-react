@@ -375,6 +375,7 @@ export default class App extends Component {
               dbSkills={this.state.dbSkills}
               dbBackgrounds={this.state.dbBackgrounds}
               updateSkill={this.updateSkill}
+              dbEquipment={this.state.dbEquipment}
             />)} />
         </div>
       </Router>
