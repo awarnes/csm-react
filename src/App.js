@@ -56,9 +56,7 @@ export default class App extends Component {
 
   updateDbAccounts () {
     fetch(`${SERVER_ROOT}/users.json`)
-      .then((response) => {
-        return response.json()
-      })
+      .then((response) => response.json())
       .then((json) => {
         if (json === null) {
           this.setState({dbAccounts: {}})
@@ -95,140 +93,105 @@ export default class App extends Component {
     this.setState({characterName: event.target.value})
   }
 
-  updateAbilityScore (ability, score) {
-    let newScores
-    if (this.state.activeCharacter.hasOwnProperty('abilityScores')) {
-      newScores = Object.assign(this.state.activeCharacter.abilityScores, {[ability]: score})
-    } else {
-      newScores = Object.assign(BASE_ABILITY_SCORES, {[ability]: score})
-    }
+  updateAbilityScore (abilityScores) {
+    let newScores = Object.assign({}, BASE_ABILITY_SCORES, this.state.activeCharacter.abilityScores, abilityScores)
 
-    const newActiveCharacter = Object.assign(this.state.activeCharacter, {abilityScores: newScores})
-    this.setState({activeCharacter: newActiveCharacter})
+    const newActiveCharacter = Object.assign({}, this.state.activeCharacter, {abilityScores: newScores})
+    this.setState({activeCharacter: newActiveCharacter}, () => {
+      const putData = {
+        method: 'PUT',
+        body: JSON.stringify(this.state.activeCharacter)
+      }
 
-    const putData = {
-      method: 'PUT',
-      body: JSON.stringify(this.state.activeCharacter)
-    }
-
-    fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
       .catch((error) => {
         console.log(error)
       })
+    })
   }
 
   updateRace (race) {
-    let newRace
-    if (this.state.activeCharacter.hasOwnProperty('race')) {
-      newRace = Object.assign({}, this.state.activeCharacter, {race})
-    } else {
-      newRace = Object.assign({race})
-    }
+    let newRace = Object.assign({}, this.state.activeCharacter, {race})
 
-    const newActiveCharacter = Object.assign(this.state.activeCharacter, newRace)
-    this.setState({activeCharacter: newActiveCharacter})
+    this.setState({activeCharacter: newRace}, () => {
+      const putData = {
+        method: 'PUT',
+        body: JSON.stringify(this.state.activeCharacter)
+      }
 
-    const putData = {
-      method: 'PUT',
-      body: JSON.stringify(this.state.activeCharacter)
-    }
-
-    fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
       .catch((error) => {
         console.log(error)
       })
+    })
   }
 
   updateSubrace (subrace) {
-    let newSubrace
-    if (this.state.activeCharacter.hasOwnProperty('subrace')) {
-      newSubrace = Object.assign({}, this.state.activeCharacter, {subrace})
-    } else {
-      newSubrace = Object.assign({subrace})
-    }
+    let newSubrace = Object.assign({}, this.state.activeCharacter, {subrace})
 
-    const newActiveCharacter = Object.assign(this.state.activeCharacter, newSubrace)
-    this.setState({activeCharacter: newActiveCharacter})
+    this.setState({activeCharacter: newSubrace}, () => {
+      const putData = {
+        method: 'PUT',
+        body: JSON.stringify(this.state.activeCharacter)
+      }
 
-    const putData = {
-      method: 'PUT',
-      body: JSON.stringify(this.state.activeCharacter)
-    }
-
-    fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
       .catch((error) => {
         console.log(error)
       })
+    })
   }
 
-  updateClass (klass) {
-    let newClass
-    if (this.state.activeCharacter.hasOwnProperty('klass')) {
-      newClass = Object.assign({}, this.state.activeCharacter, {klass})
-    } else {
-      newClass = Object.assign({klass})
-    }
+  updateClass (characterClass) {
+    let newCharacterClass = Object.assign({}, this.state.activeCharacter, {klass: characterClass})
 
-    const newActiveCharacter = Object.assign(this.state.activeCharacter, newClass)
-    this.setState({activeCharacter: newActiveCharacter})
+    this.setState({activeCharacter: newCharacterClass}, () => {
+      const putData = {
+        method: 'PUT',
+        body: JSON.stringify(this.state.activeCharacter)
+      }
 
-    const putData = {
-      method: 'PUT',
-      body: JSON.stringify(this.state.activeCharacter)
-    }
-
-    fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
       .catch((error) => {
         console.log(error)
       })
+    })
   }
 
   updatePrestige (prestige) {
-    let newPrestige
-    if (this.state.activeCharacter.hasOwnProperty('prestige')) {
-      newPrestige = Object.assign({}, this.state.activeCharacter, {prestige})
-    } else {
-      newPrestige = Object.assign({prestige})
-    }
+    let newPrestige = Object.assign({}, this.state.activeCharacter, {prestige})
 
-    const newActiveCharacter = Object.assign(this.state.activeCharacter, newPrestige)
-    this.setState({activeCharacter: newActiveCharacter})
+    this.setState({activeCharacter: newPrestige}, () => {
+      const putData = {
+        method: 'PUT',
+        body: JSON.stringify(this.state.activeCharacter)
+      }
 
-    const putData = {
-      method: 'PUT',
-      body: JSON.stringify(this.state.activeCharacter)
-    }
-
-    fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
       .catch((error) => {
         console.log(error)
       })
+    })
   }
 
   updateBackground (background) {
-    let newBackground
-    if (this.state.activeCharacter.hasOwnProperty('background')) {
-      newBackground = Object.assign({}, this.state.activeCharacter, {background})
-    } else {
-      newBackground = Object.assign({background})
-    }
+    let newBackground = Object.assign({}, this.state.activeCharacter, {background})
 
-    const newActiveCharacter = Object.assign(this.state.activeCharacter, newBackground)
-    this.setState({activeCharacter: newActiveCharacter})
+    this.setState({activeCharacter: newBackground}, () => {
+      this.state.dbBackgrounds[this.state.activeCharacter.background].skills.forEach((skill) => {
+        this.updateSkill(skill)
+      })
 
-    this.state.dbBackgrounds[this.state.activeCharacter.background].skills.forEach((skill) => {
-      this.updateSkill(skill)
-    })
+      const putData = {
+        method: 'PUT',
+        body: JSON.stringify(this.state.activeCharacter)
+      }
 
-    const putData = {
-      method: 'PUT',
-      body: JSON.stringify(this.state.activeCharacter)
-    }
-
-    fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
       .catch((error) => {
         console.log(error)
       })
+    })
   }
 
   updateSkill (skill) {
@@ -245,7 +208,7 @@ export default class App extends Component {
       newSkills = new Array(skill)
     }
 
-    const newActiveCharacter = Object.assign(this.state.activeCharacter, {skills: newSkills})
+    const newActiveCharacter = Object.assign({}, this.state.activeCharacter, {skills: newSkills})
     this.setState({activeCharacter: newActiveCharacter})
 
     const putData = {
@@ -263,9 +226,7 @@ export default class App extends Component {
     this.setState({activeCharacterId: uid})
 
     fetch(`${SERVER_ROOT}/characters/${uid}.json`)
-      .then((response) => {
-        return response.json()
-      })
+      .then((response) => response.json())
       .then((json) => {
         this.setState({activeCharacter: json})
       })
@@ -281,13 +242,11 @@ export default class App extends Component {
     }
 
     fetch(`${SERVER_ROOT}/characters.json`, postData)
-      .then((response) => {
-        return response.json()
-      })
+      .then((response) => response.json())
       .then((charUid) => {
         this.setState({activeCharacterId: charUid.name})
 
-        let characterInfo = Object.assign(this.state.activeAccountInfo, {[charUid.name]: this.state.characterName})
+        let characterInfo = Object.assign({}, this.state.activeAccountInfo, {[charUid.name]: this.state.characterName})
         const putData = {
           method: 'PUT',
           body: JSON.stringify(characterInfo)
@@ -302,9 +261,7 @@ export default class App extends Component {
 
   componentWillMount () {
     fetch('https://csm-5e.firebaseio.com/backgrounds.json')
-      .then((response) => {
-        return response.json()
-      })
+      .then((response) => response.json())
       .then((backgrounds) => {
         this.setState({dbBackgrounds: backgrounds})
       })
@@ -313,9 +270,7 @@ export default class App extends Component {
       })
 
     fetch('https://csm-5e.firebaseio.com/skills.json')
-      .then((response) => {
-        return response.json()
-      })
+      .then((response) => response.json())
       .then((skills) => {
         this.setState({dbSkills: skills})
       })
@@ -324,9 +279,7 @@ export default class App extends Component {
       })
 
     fetch('https://csm-5e.firebaseio.com/races.json')
-      .then((response) => {
-        return response.json()
-      })
+      .then((response) => response.json())
       .then((races) => {
         this.setState({dbRaces: races})
       })
@@ -335,9 +288,7 @@ export default class App extends Component {
       })
 
     fetch('https://csm-5e.firebaseio.com/subraces.json')
-      .then((response) => {
-        return response.json()
-      })
+      .then((response) => response.json())
       .then((subraces) => {
         this.setState({dbSubraces: subraces})
       })
@@ -346,9 +297,7 @@ export default class App extends Component {
       })
 
     fetch('https://csm-5e.firebaseio.com/klasses.json')
-      .then((response) => {
-        return response.json()
-      })
+      .then((response) => response.json())
       .then((characterClasses) => {
         this.setState({dbCharacterClasses: characterClasses})
       })
@@ -357,9 +306,7 @@ export default class App extends Component {
       })
 
     fetch('https://csm-5e.firebaseio.com/prestiges.json')
-      .then((response) => {
-        return response.json()
-      })
+      .then((response) => response.json())
       .then((prestiges) => {
         this.setState({dbPrestiges: prestiges})
       })

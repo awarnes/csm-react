@@ -30,47 +30,19 @@ export default class EditCharacter extends Component {
   render () {
     let abilityScores, activeCharacterRace, activeCharacterSubrace, activeCharacterClass, activeCharacterPrestige, activeCharacterBackground, activeCharacterSkills
 
-    if (this.props.activeCharacter.hasOwnProperty('abilityScores')) {
-      abilityScores = this.props.activeCharacter.abilityScores
-    } else {
-      abilityScores = BASE_ABILITY_SCORES
-    }
+    abilityScores = this.props.activeCharacter.abilityScores || BASE_ABILITY_SCORES
 
-    if (this.props.activeCharacter.hasOwnProperty('race')) {
-      activeCharacterRace = this.props.activeCharacter.race
-    } else {
-      activeCharacterRace = ''
-    }
+    activeCharacterRace = this.props.activeCharacter.race || ''
 
-    if (this.props.activeCharacter.hasOwnProperty('subrace')) {
-      activeCharacterSubrace = this.props.activeCharacter.subrace
-    } else {
-      activeCharacterSubrace = ''
-    }
+    activeCharacterSubrace = this.props.activeCharacter.subrace || ''
 
-    if (this.props.activeCharacter.hasOwnProperty('klass')) {
-      activeCharacterClass = this.props.activeCharacter.klass
-    } else {
-      activeCharacterClass = ''
-    }
+    activeCharacterClass = this.props.activeCharacter.klass || ''
 
-    if (this.props.activeCharacter.hasOwnProperty('prestige')) {
-      activeCharacterPrestige = this.props.activeCharacter.prestige
-    } else {
-      activeCharacterPrestige = ''
-    }
+    activeCharacterPrestige = this.props.activeCharacter.prestige || ''
 
-    if (this.props.activeCharacter.hasOwnProperty('background')) {
-      activeCharacterBackground = this.props.activeCharacter.background
-    } else {
-      activeCharacterBackground = ''
-    }
+    activeCharacterBackground = this.props.activeCharacter.background || ''
 
-    if (this.props.activeCharacter.hasOwnProperty('skills')) {
-      activeCharacterSkills = this.props.activeCharacter.skills
-    } else {
-      activeCharacterSkills = []
-    }
+    activeCharacterSkills = this.props.activeCharacter.skills || []
 
     return (
       <Grid>

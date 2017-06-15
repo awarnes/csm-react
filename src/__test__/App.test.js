@@ -100,7 +100,7 @@ describe('The App', () => {
   it('updates the ability scores for activeCharacter if no ability scores existed previously when this.updateAbilityScore is called', () => {
     wrapper.setState({activeCharacter: {name: 'Apple'}})
 
-    app.updateAbilityScore('STR', 10)
+    app.updateAbilityScore({STR: 10, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8})
 
     expect(wrapper.state().activeCharacter.abilityScores).toEqual({STR: 10, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8})
   })
@@ -108,7 +108,7 @@ describe('The App', () => {
   it('updates the ability scores for activeCharacter if the abilityScores object does exist when this.updateAbilityScore is called', () => {
     wrapper.setState({activeCharacter: {name: 'Apple', abilityScores: {STR: 10, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}}})
 
-    app.updateAbilityScore('STR', 9)
+    app.updateAbilityScore({STR: 9, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8})
 
     expect(wrapper.state().activeCharacter.abilityScores).toEqual({STR: 9, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8})
   })
@@ -209,13 +209,13 @@ describe('The App', () => {
     expect(wrapper.state().activeCharacter.skills).toEqual(['Stealth', 'Intimidation'])
   })
 
-  // it('removes a skill from activeCharacter if the skill already existed when this.updateSkill is called', () => {
-  //   wrapper.setState({activeCharacter: {name: 'Apple', skills: ['Stealth']}})
-  //
-  //   app.updateSkill('Stealth')
-  //
-  //   expect(wrapper.state().activeCharacter.skills).toEqual([])
-  // })
+  it('removes a skill from activeCharacter if the skill already existed when this.updateSkill is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple', skills: ['Stealth']}})
+
+    app.updateSkill('Stealth')
+
+    expect(wrapper.state().activeCharacter.skills).toEqual([])
+  })
 
   describe('when routing', () => {
     let wrapper

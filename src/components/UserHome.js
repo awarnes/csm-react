@@ -56,9 +56,7 @@ export default class UserHome extends Component {
 
   componentWillMount () {
     fetch(`https://csm-5e.firebaseio.com/users/${this.props.match.params.user}.json`)
-      .then((response) => {
-        return response.json()
-      })
+      .then((response) => response.json())
       .then((json) => {
         if (json === null) {
           this.props.updateActiveAccount(this.props.match.params.user)
@@ -96,7 +94,7 @@ export default class UserHome extends Component {
             />
           </Modal.Body>
           <Modal.Footer>
-            <Button id='createNewCharacter-btn' onClick={this.createNewCharacter}>Create!</Button>
+            <Button id='createNewCharacter-btn' onClick={this.createNewCharacter} disabled={!this.props.characterName}>Create!</Button>
             <Button id='closeModal-btn' onClick={this.closeModal}>Close</Button>
           </Modal.Footer>
         </Modal>
