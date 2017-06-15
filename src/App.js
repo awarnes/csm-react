@@ -49,6 +49,7 @@ export default class App extends Component {
     this.updateClass = this.updateClass.bind(this)
     this.updatePrestige = this.updatePrestige.bind(this)
     this.updateBackground = this.updateBackground.bind(this)
+    this.updateSkill = this.updateSkill.bind(this)
 
     this.createCharacter = this.createCharacter.bind(this)
   }
@@ -213,6 +214,38 @@ export default class App extends Component {
     }
 
     const newActiveCharacter = Object.assign(this.state.activeCharacter, newBackground)
+    this.setState({activeCharacter: newActiveCharacter})
+
+    this.state.dbBackgrounds[this.state.activeCharacter.background].skills.forEach((skill) => {
+      this.updateSkill(skill)
+    })
+
+    const putData = {
+      method: 'PUT',
+      body: JSON.stringify(this.state.activeCharacter)
+    }
+
+    fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  updateSkill (skill) {
+    let newSkills
+    if (this.state.activeCharacter.hasOwnProperty('skills')) {
+      newSkills = this.state.activeCharacter.skills
+
+      if (newSkills.indexOf(skill) === -1) {
+        newSkills.push(skill)
+      } else {
+        newSkills.splice(newSkills.indexOf(skill), 1)
+      }
+    } else {
+      newSkills = new Array(skill)
+    }
+
+    const newActiveCharacter = Object.assign(this.state.activeCharacter, {skills: newSkills})
     this.setState({activeCharacter: newActiveCharacter})
 
     const putData = {
@@ -384,6 +417,7 @@ export default class App extends Component {
               dbSubraces={this.state.dbSubraces}
               dbSkills={this.state.dbSkills}
               dbBackgrounds={this.state.dbBackgrounds}
+              updateSkill={this.updateSkill}
             />)} />
         </div>
       </Router>

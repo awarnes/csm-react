@@ -1,17 +1,21 @@
 import React from 'react'
 import EditSkills from '../components/EditSkills'
 import { shallow } from 'enzyme'
-import { FAKE_BACKGROUNDS } from '../test-data'
+import { FAKE_BACKGROUNDS, FAKE_CHARACTER_CLASSES, FAKE_SKILLS } from '../test-data'
 
-/* global it describe expect beforeEach */
+/* global it describe expect beforeEach jest */
 
 describe('EditSkills', () => {
-  let wrapper, app //, updateSkillCallback
+  let wrapper, app, updateSkillCallback
 
   beforeEach(() => {
-    // updateSkillCallback = jest.fn()
+    updateSkillCallback = jest.fn()
     wrapper = shallow(<EditSkills
+      updateSkill={updateSkillCallback}
       dbBackgrounds={FAKE_BACKGROUNDS}
+      dbCharacterClasses={FAKE_CHARACTER_CLASSES}
+      dbSkills={FAKE_SKILLS}
+      activeCharacterClass={'Barbarian'}
       activeCharacterBackground={'Entertainer'}
       activeCharacterSkills={['Acrobatics', 'Performance']}
     />)
@@ -59,5 +63,19 @@ describe('EditSkills', () => {
 
     wrapper.find('#allSkills-btn').simulate('click')
     expect(wrapper.state('modalDisplay')).toEqual('all')
+  })
+
+  it('displays skills associated with the current character\'s class in a modal when the "Class Skills" button is clicked', () => {
+    wrapper.find('#classSkills-btn').simulate('click')
+
+    expect(wrapper.find('Modal').find('Button').length).toBe(7)
+  })
+
+  it('makes the correct callback when a skill button is clicked', () => {
+    wrapper.find('#classSkills-btn').simulate('click')
+
+    wrapper.find('Modal').find('#Survival-btn').simulate('click')
+
+    expect(updateSkillCallback.mock.calls).toEqual([['Survival']])
   })
 })

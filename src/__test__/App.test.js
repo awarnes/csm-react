@@ -3,7 +3,7 @@ import App from '../App'
 import { shallow, mount } from 'enzyme'
 import { MemoryRouter } from 'react-router-dom'
 import fetch from 'jest-fetch-mock'
-import { FAKE_USERS } from '../test-data'
+import { FAKE_USERS, FAKE_BACKGROUNDS } from '../test-data'
 
 global.fetch = fetch
 
@@ -169,13 +169,53 @@ describe('The App', () => {
     expect(wrapper.state().activeCharacter.prestige).toEqual('Champion')
   })
 
-  it('updates the prestige for activeCharacter if the prestige object does exist when this.updatePrestige is called', () => {
+  it('updates the prestige for activeCharacter if the prestige object DOES exist when this.updatePrestige is called', () => {
     wrapper.setState({activeCharacter: {name: 'Apple', prestige: 'Champion'}})
 
     app.updatePrestige('Eldritch Knight')
 
     expect(wrapper.state().activeCharacter.prestige).toEqual('Eldritch Knight')
   })
+
+  it('updates the background for activeCharacter if no background existed previously when this.updateBackground is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple'}, dbBackgrounds: FAKE_BACKGROUNDS})
+
+    app.updateBackground('Entertainer')
+
+    expect(wrapper.state().activeCharacter.background).toEqual('Entertainer')
+  })
+
+  it('updates the background for activeCharacter if the background object DOES exist when this.updateBackground is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple', background: 'Entertainer'}, dbBackgrounds: FAKE_BACKGROUNDS})
+
+    app.updateBackground('Folk Hero')
+
+    expect(wrapper.state().activeCharacter.background).toEqual('Folk Hero')
+  })
+
+  it('updates the skills for activeCharacter if no skills existed previously when this.updateSkill is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple'}})
+
+    app.updateSkill('Stealth')
+
+    expect(wrapper.state().activeCharacter.skills).toEqual(['Stealth'])
+  })
+
+  it('updates the skills for activeCharacter if the skills object DOES exist when this.updateSkill is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple', skills: ['Stealth']}})
+
+    app.updateSkill('Intimidation')
+
+    expect(wrapper.state().activeCharacter.skills).toEqual(['Stealth', 'Intimidation'])
+  })
+
+  // it('removes a skill from activeCharacter if the skill already existed when this.updateSkill is called', () => {
+  //   wrapper.setState({activeCharacter: {name: 'Apple', skills: ['Stealth']}})
+  //
+  //   app.updateSkill('Stealth')
+  //
+  //   expect(wrapper.state().activeCharacter.skills).toEqual([])
+  // })
 
   describe('when routing', () => {
     let wrapper
