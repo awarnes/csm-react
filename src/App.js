@@ -31,7 +31,8 @@ export default class App extends Component {
       dbCharacterClasses: {},
       dbPrestiges: {},
       dbRaces: {},
-      dbSubraces: {}
+      dbSubraces: {},
+      dbEquipment: {}
     }
 
     this.onLoginAccountNameInput = this.onLoginAccountNameInput.bind(this)
@@ -267,6 +268,15 @@ export default class App extends Component {
       })
       .catch((error) => {
         console.log('Backgrounds: ' + error)
+      })
+
+    fetch('https://csm-5e.firebaseio.com/equipment.json')
+      .then((response) => response.json())
+      .then((equipment) => {
+        this.setState({dbEquipment: equipment})
+      })
+      .catch((error) => {
+        console.log('Equipment: ' + error)
       })
 
     fetch('https://csm-5e.firebaseio.com/skills.json')
