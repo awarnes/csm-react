@@ -5,17 +5,12 @@ import 'airbnb-js-shims' // to allow jest to understand Object.entries for parsi
 
 import { Button } from 'react-bootstrap'
 
-/* global fetch */
-
 const SUCCESS_STYLE = 'success'
 const DEFAULT_STYLE = 'default'
 
 export default class EditBackground extends Component {
   constructor (props) {
     super(props)
-    this.state = {
-      backgrounds: {}
-    }
 
     this.setBackground = this.setBackground.bind(this)
     this.checkButtonStyle = this.checkButtonStyle.bind(this)
@@ -35,7 +30,7 @@ export default class EditBackground extends Component {
   }
 
   renderBackgroundButtons () {
-    const backgroundButtons = Object.entries(this.state.backgrounds).map((entry) => {
+    const backgroundButtons = Object.entries(this.props.dbBackgrounds).map((entry) => {
       return <Button type='button'
         id={`${entry[0]}-btn`}
         key={`${entry[0]}-btn`}
@@ -44,19 +39,6 @@ export default class EditBackground extends Component {
     })
 
     return backgroundButtons
-  }
-
-  componentWillMount () {
-    fetch('https://csm-5e.firebaseio.com/backgrounds.json')
-      .then((response) => {
-        return response.json()
-      })
-      .then((backgrounds) => {
-        this.setState({backgrounds})
-      })
-      .catch((error) => {
-        console.log('Classes: ' + error)
-      })
   }
 
   render () {
@@ -74,5 +56,6 @@ export default class EditBackground extends Component {
 
 EditBackground.propTypes = {
   activeCharacterBackground: PropTypes.string,
-  updateBackground: PropTypes.func
+  updateBackground: PropTypes.func,
+  dbBackgrounds: PropTypes.object
 }

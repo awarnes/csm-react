@@ -1,12 +1,7 @@
 import React from 'react'
 import EditRace from '../components/EditRace'
-import fetch from 'jest-fetch-mock'
-import { FAKE_SERVER_DATA } from '../test-data'
 import { shallow } from 'enzyme'
-
-global.fetch = fetch
-
-fetch.mockResponse(JSON.stringify(FAKE_SERVER_DATA))
+import { FAKE_RACES, FAKE_SUBRACES } from '../test-data'
 
 /* global it describe expect beforeEach jest */
 
@@ -21,30 +16,9 @@ describe('EditRace', () => {
       activeCharacterRace='Elf'
       activeCharacterSubrace='Wood Elf'
       updateRace={updateRaceCallback}
-      updateSubrace={updateSubraceCallback} />)
-
-    wrapper.setState({races: {
-      Dwarf: {desc: 'Digs stuff up.', subraces: {'Hill Dwarf': true, 'Mountain Dwarf': true}},
-      Elf: {desc: 'Outlives stuff.', subraces: {'High Elf': true, 'Wood Elf': true, 'Drow': true}},
-      Halfling: {desc: 'Stuff their belly.', subraces: {Lightfoot: true, Stout: true}},
-      Human: {desc: 'Conquers stuff.', subraces: {}},
-      Dragonborn: {desc: 'Proud of their stuff.', subraces: {}},
-      Gnome: {desc: 'Tinkers with stuff.', subraces: {'Forest Gnome': true, 'Rock Gnome': true}},
-      'Half-Elf': {desc: 'Double the stuff.', subraces: {}},
-      'Half-Orc': {desc: 'Tough stuff.', subraces: {}},
-      Tiefling: {desc: 'Burns stuff.', subraces: {}}
-    },
-      subraces: {
-        'Hill Dwarf': {desc: 'Wise and tough.'},
-        'Mountain Dwarf': {desc: 'Strong and armored.'},
-        'High Elf': {desc: 'Intelligent spell-casters.'},
-        'Wood Elf': {desc: 'Wise and fleet of foot.'},
-        'Drow': {desc: 'Charismatic under-dwellers.'},
-        'Lightfoot': {desc: 'Charismatic and sneaky.'},
-        'Stout': {desc: 'Tough and more tough.'},
-        'Forest Gnome': {desc: 'Friends with animals.'},
-        'Rock Gnome': {desc: 'Friends with machines.'}
-      }})
+      updateSubrace={updateSubraceCallback}
+      dbRaces={FAKE_RACES}
+      dbSubraces={FAKE_SUBRACES} />)
 
     app = wrapper.instance()
   })

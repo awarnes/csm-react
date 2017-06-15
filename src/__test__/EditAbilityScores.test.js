@@ -1,12 +1,6 @@
 import React from 'react'
 import EditAbilityScores from '../components/EditAbilityScores'
-import fetch from 'jest-fetch-mock'
-import { FAKE_SERVER_DATA } from '../test-data'
 import { shallow } from 'enzyme'
-
-global.fetch = fetch
-
-fetch.mockResponse(JSON.stringify(FAKE_SERVER_DATA))
 
 /* global it describe expect beforeEach jest */
 
@@ -38,19 +32,19 @@ describe('EditAbilityScores', () => {
   it('sends the increment callback correctly', () => {
     app.increaseScore('STR')
 
-    expect(callback.mock.calls).toEqual([['STR', 11]])
+    expect(callback.mock.calls).toEqual([[{STR: 11, DEX: 15, CON: 8, INT: 10, WIS: 10, CHA: 10}]])
   })
 
   it('sends the decrement callback correctly', () => {
     app.decreaseScore('STR')
 
-    expect(callback.mock.calls).toEqual([['STR', 9]])
+    expect(callback.mock.calls).toEqual([[{STR: 9, DEX: 15, CON: 8, INT: 10, WIS: 10, CHA: 10}]])
   })
 
   it('sends the reset callback correctly', () => {
     app.resetScores()
 
-    expect(callback.mock.calls).toEqual([['STR', 8], ['DEX', 8], ['CON', 8], ['INT', 8], ['WIS', 8], ['CHA', 8]])
+    expect(callback.mock.calls).toEqual([[{STR: 8, DEX: 8, CON: 8, INT: 8, WIS: 8, CHA: 8}]])
   })
 
   it('disables the increment button when the score is 15', () => {

@@ -2,13 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from '../App'
 import fetch from 'jest-fetch-mock'
-import { FAKE_SERVER_DATA } from '../test-data'
+import { FAKE_USERS } from '../test-data'
 import { mount } from 'enzyme'
 import { MemoryRouter } from 'react-router-dom'
 
 global.fetch = fetch
 
-fetch.mockResponse(JSON.stringify(FAKE_SERVER_DATA.users))
+fetch.mockResponse(JSON.stringify(FAKE_USERS))
 
 /* global it describe expect beforeEach */
 

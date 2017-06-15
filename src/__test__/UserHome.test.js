@@ -1,12 +1,12 @@
 import React from 'react'
 import UserHome from '../components/UserHome'
 import fetch from 'jest-fetch-mock'
-import { FAKE_SERVER_DATA } from '../test-data'
+import { FAKE_USERS } from '../test-data'
 import { shallow } from 'enzyme'
 
 global.fetch = fetch
 
-fetch.mockResponse(JSON.stringify(FAKE_SERVER_DATA))
+fetch.mockResponse(JSON.stringify(FAKE_USERS))
 
 /* global it describe expect beforeEach jest */
 

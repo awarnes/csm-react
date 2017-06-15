@@ -8,6 +8,7 @@ import EditAbilityScores from './EditAbilityScores'
 import EditRace from './EditRace'
 import EditClass from './EditClass'
 import EditBackground from './EditBackground'
+import EditSkills from './EditSkills'
 
 import { BASE_ABILITY_SCORES } from '../utils'
 
@@ -27,43 +28,21 @@ export default class EditCharacter extends Component {
   }
 
   render () {
-    let abilityScores, activeCharacterRace, activeCharacterSubrace, activeCharacterClass, activeCharacterPrestige, activeCharacterBackground
+    let abilityScores, activeCharacterRace, activeCharacterSubrace, activeCharacterClass, activeCharacterPrestige, activeCharacterBackground, activeCharacterSkills
 
-    if (this.props.activeCharacter.hasOwnProperty('abilityScores')) {
-      abilityScores = this.props.activeCharacter.abilityScores
-    } else {
-      abilityScores = BASE_ABILITY_SCORES
-    }
+    abilityScores = this.props.activeCharacter.abilityScores || BASE_ABILITY_SCORES
 
-    if (this.props.activeCharacter.hasOwnProperty('race')) {
-      activeCharacterRace = this.props.activeCharacter.race
-    } else {
-      activeCharacterRace = ''
-    }
+    activeCharacterRace = this.props.activeCharacter.race || ''
 
-    if (this.props.activeCharacter.hasOwnProperty('subrace')) {
-      activeCharacterSubrace = this.props.activeCharacter.subrace
-    } else {
-      activeCharacterSubrace = ''
-    }
+    activeCharacterSubrace = this.props.activeCharacter.subrace || ''
 
-    if (this.props.activeCharacter.hasOwnProperty('klass')) {
-      activeCharacterClass = this.props.activeCharacter.klass
-    } else {
-      activeCharacterClass = ''
-    }
+    activeCharacterClass = this.props.activeCharacter.klass || ''
 
-    if (this.props.activeCharacter.hasOwnProperty('prestige')) {
-      activeCharacterPrestige = this.props.activeCharacter.prestige
-    } else {
-      activeCharacterPrestige = ''
-    }
+    activeCharacterPrestige = this.props.activeCharacter.prestige || ''
 
-    if (this.props.activeCharacter.hasOwnProperty('background')) {
-      activeCharacterBackground = this.props.activeCharacter.background
-    } else {
-      activeCharacterBackground = ''
-    }
+    activeCharacterBackground = this.props.activeCharacter.background || ''
+
+    activeCharacterSkills = this.props.activeCharacter.skills || []
 
     return (
       <Grid>
@@ -95,7 +74,7 @@ export default class EditCharacter extends Component {
 
             <Row bsClass='text-center'>
               <Button
-                type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Skills</Link></Button>
+                type='button' bsSize='large'><Link to={`${this.props.match.url}/Skills`}>Skills</Link></Button>
               <Button
                 type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Spells</Link></Button>
               <Button
@@ -129,17 +108,32 @@ export default class EditCharacter extends Component {
                 activeCharacterRace={activeCharacterRace}
                 activeCharacterSubrace={activeCharacterSubrace}
                 updateRace={this.props.updateRace}
-                updateSubrace={this.props.updateSubrace} />)} />
+                updateSubrace={this.props.updateSubrace}
+                dbRaces={this.props.dbRaces}
+                dbSubraces={this.props.dbSubraces} />)} />
 
               <Route path={`${this.props.match.url}/Classes`} render={props => (<EditClass {...props}
                 activeCharacterClass={activeCharacterClass}
                 activeCharacterPrestige={activeCharacterPrestige}
                 updateClass={this.props.updateClass}
-                updatePrestige={this.props.updatePrestige} />)} />
+                updatePrestige={this.props.updatePrestige}
+                dbCharacterClasses={this.props.dbCharacterClasses}
+                dbPrestiges={this.props.dbPrestiges} />)} />
 
               <Route path={`${this.props.match.url}/Backgrounds`} render={props => (<EditBackground {...props}
                 activeCharacterBackground={activeCharacterBackground}
-                updateBackground={this.props.updateBackground} />)} />
+                updateBackground={this.props.updateBackground}
+                dbBackgrounds={this.props.dbBackgrounds} />)} />
+
+              <Route path={`${this.props.match.url}/Skills`} render={props => (<EditSkills {...props}
+                activeCharacterBackground={activeCharacterBackground}
+                activeCharacterClass={activeCharacterClass}
+                activeCharacterSkills={activeCharacterSkills}
+                dbBackgrounds={this.props.dbBackgrounds}
+                dbCharacterClasses={this.props.dbCharacterClasses}
+                dbSkills={this.props.dbSkills}
+                updateSkill={this.props.updateSkill} />)} />
+
             </Well>
           </Col>
 
@@ -159,5 +153,12 @@ EditCharacter.propTypes = {
   updateSubrace: PropTypes.func,
   updateClass: PropTypes.func,
   updatePrestige: PropTypes.func,
-  updateBackground: PropTypes.func
+  updateBackground: PropTypes.func,
+  updateSkill: PropTypes.func,
+  dbCharacterClasses: PropTypes.object,
+  dbPrestiges: PropTypes.object,
+  dbRaces: PropTypes.object,
+  dbSubraces: PropTypes.object,
+  dbSkills: PropTypes.object,
+  dbBackgrounds: PropTypes.object
 }

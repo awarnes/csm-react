@@ -5,8 +5,6 @@ import 'airbnb-js-shims' // to allow jest to understand Object.entries for parsi
 
 import { Button, OverlayTrigger, Tooltip, Modal } from 'react-bootstrap'
 
-/* global fetch */
-
 const SUCCESS_STYLE = 'success'
 const DEFAULT_STYLE = 'default'
 
@@ -14,9 +12,7 @@ export default class EditRace extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      showModal: false,
-      races: {},
-      subraces: {}
+      showModal: false
     }
 
     this.openModal = this.openModal.bind(this)
@@ -39,7 +35,7 @@ export default class EditRace extends Component {
   setRace (race) {
     this.props.updateRace(race)
 
-    if (this.state.races[race].hasOwnProperty('subraces')) {
+    if (this.props.dbRaces[race].hasOwnProperty('subraces')) {
       this.openModal()
     } else {
       this.props.updateSubrace('')
@@ -61,7 +57,7 @@ export default class EditRace extends Component {
   }
 
   renderRaceButtons () {
-    const raceButtons = Object.entries(this.state.races).map((entry) => {
+    const raceButtons = Object.entries(this.props.dbRaces).map((entry) => {
       const tooltip = (<Tooltip id={`${entry[0]}-tooltip`}>{entry[1].desc}</Tooltip>)
 
       return <OverlayTrigger key={`${entry[0]}-overlay`} placement='left' overlay={tooltip}>
@@ -76,11 +72,11 @@ export default class EditRace extends Component {
   }
 
   renderSubraceButtons () {
-    if (Object.keys(this.state.races).indexOf(this.props.activeCharacterRace) !== -1 && this.state.races[this.props.activeCharacterRace].hasOwnProperty('subraces')) {
-      const subraceButtons = Object.keys(this.state.subraces).filter((key) => {
-        return Object.keys(this.state.races[this.props.activeCharacterRace].subraces).indexOf(key) !== -1
+    if (Object.keys(this.props.dbRaces).indexOf(this.props.activeCharacterRace) !== -1 && this.props.dbRaces[this.props.activeCharacterRace].hasOwnProperty('subraces')) {
+      const subraceButtons = Object.keys(this.props.dbSubraces).filter((key) => {
+        return Object.keys(this.props.dbRaces[this.props.activeCharacterRace].subraces).indexOf(key) !== -1
       }).map((entry) => {
-        const tooltip = (<Tooltip id={`${entry}-tooltip`}>{this.state.subraces[entry].desc}</Tooltip>)
+        const tooltip = (<Tooltip id={`${entry}-tooltip`}>{this.props.dbSubraces[entry].desc}</Tooltip>)
 
         return <OverlayTrigger key={`${entry}-overlay`} placement='left' overlay={tooltip}>
           <Button type='button'
@@ -92,30 +88,6 @@ export default class EditRace extends Component {
 
       return subraceButtons
     }
-  }
-
-  componentWillMount () {
-    fetch('https://csm-5e.firebaseio.com/races.json')
-      .then((response) => {
-        return response.json()
-      })
-      .then((json) => {
-        this.setState({races: json})
-      })
-      .catch((error) => {
-        console.log('Races: ' + error)
-      })
-
-    fetch('https://csm-5e.firebaseio.com/subraces.json')
-      .then((response) => {
-        return response.json()
-      })
-      .then((json) => {
-        this.setState({subraces: json})
-      })
-      .catch((error) => {
-        console.log('Subraces: ' + error)
-      })
   }
 
   render () {
@@ -147,5 +119,7 @@ EditRace.propTypes = {
   activeCharacterRace: PropTypes.string,
   activeCharacterSubrace: PropTypes.string,
   updateRace: PropTypes.func,
-  updateSubrace: PropTypes.func
+  updateSubrace: PropTypes.func,
+  dbRaces: PropTypes.object,
+  dbSubraces: PropTypes.object
 }

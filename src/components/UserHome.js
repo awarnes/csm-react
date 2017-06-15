@@ -19,6 +19,7 @@ export default class UserHome extends Component {
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.createNewCharacter = this.createNewCharacter.bind(this)
+    this.renderCharacters = this.renderCharacters.bind(this)
   }
 
   openModal () {
@@ -34,26 +35,7 @@ export default class UserHome extends Component {
     this.props.createCharacter()
   }
 
-  componentWillMount () {
-    fetch(`https://csm-5e.firebaseio.com/users/${this.props.match.params.user}.json`)
-      .then((response) => {
-        return response.json()
-      })
-      .then((json) => {
-        if (json === null) {
-          this.props.updateActiveAccount(this.props.match.params.user)
-          this.props.updateActiveAccountInfo({})
-        } else {
-          this.props.updateActiveAccount(this.props.match.params.user)
-          this.props.updateActiveAccountInfo(json.characters)
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-
-  render () {
+  renderCharacters () {
     const dispArray = Object.entries(this.props.activeAccountInfo).map((entry) => {
       let charId = charIdMaker(entry[0])
       return <ListGroupItem id={charId} key={`char-${entry[0]}`}>{entry[1]}
@@ -69,10 +51,31 @@ export default class UserHome extends Component {
       </ListGroupItem>
     })
 
+    return dispArray
+  }
+
+  componentWillMount () {
+    fetch(`https://csm-5e.firebaseio.com/users/${this.props.match.params.user}.json`)
+      .then((response) => response.json())
+      .then((json) => {
+        if (json === null) {
+          this.props.updateActiveAccount(this.props.match.params.user)
+          this.props.updateActiveAccountInfo({})
+        } else {
+          this.props.updateActiveAccount(this.props.match.params.user)
+          this.props.updateActiveAccountInfo(json.characters)
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  render () {
     return (
       <div>
         <h1 id='welcome-user'>Hello, {this.props.match.params.user}!</h1>
-        <ListGroup>{dispArray}</ListGroup>
+        <ListGroup>{this.renderCharacters()}</ListGroup>
         <Button id='createCharacter-btn' onClick={this.openModal}>Create A New Character</Button>
         <Button id='quit-btn'><Link id='quit-link' to='/' onClick={this.props.clearActiveAccount}>Quit</Link></Button>
 
@@ -91,7 +94,7 @@ export default class UserHome extends Component {
             />
           </Modal.Body>
           <Modal.Footer>
-            <Button id='createNewCharacter-btn' onClick={this.createNewCharacter}>Create!</Button>
+            <Button id='createNewCharacter-btn' onClick={this.createNewCharacter} disabled={!this.props.characterName}>Create!</Button>
             <Button id='closeModal-btn' onClick={this.closeModal}>Close</Button>
           </Modal.Footer>
         </Modal>

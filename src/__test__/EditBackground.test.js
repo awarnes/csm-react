@@ -1,12 +1,7 @@
 import React from 'react'
 import EditBackground from '../components/EditBackground'
-import fetch from 'jest-fetch-mock'
-import { FAKE_SERVER_DATA } from '../test-data'
 import { shallow } from 'enzyme'
-
-global.fetch = fetch
-
-fetch.mockResponse(JSON.stringify(FAKE_SERVER_DATA))
+import {FAKE_BACKGROUNDS} from '../test-data'
 
 /* global it describe expect beforeEach jest */
 
@@ -18,23 +13,8 @@ describe('EditBackground', () => {
 
     wrapper = shallow(<EditBackground
       activeCharacterBackground='Acolyte'
-      updateBackground={updateBackgroundCallback} />)
-
-    wrapper.setState({backgrounds: {
-      Acolyte: {},
-      Charlatan: {},
-      Criminal: {},
-      Entertainer: {},
-      'Folk Hero': {},
-      'Guild Artisan': {},
-      Hermit: {},
-      Noble: {},
-      Outlander: {},
-      Sage: {},
-      Sailor: {},
-      Soldier: {},
-      Urchin: {}
-    }})
+      updateBackground={updateBackgroundCallback}
+      dbBackgrounds={FAKE_BACKGROUNDS} />)
 
     app = wrapper.instance()
   })

@@ -3,6 +3,9 @@ import PropTypes from 'prop-types'
 import { Button, FormControl, FormGroup } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
+const WARNING_STYLE = 'warning'
+const SUCCESS_STYLE = 'success'
+
 export default class LogInPage extends Component {
   constructor (props) {
     super(props)
@@ -13,25 +16,21 @@ export default class LogInPage extends Component {
   }
 
   getValidationState () {
-    let checkInfo = this.props.accountName
+    const checkInfo = this.props.accountName
 
     let found = Object.keys(this.props.dbAccounts).findIndex((name) => {
       return name === checkInfo
     })
 
     if (found === -1) {
-      return 'warning'
+      return WARNING_STYLE
     } else if (found !== -1) {
-      return 'success'
+      return SUCCESS_STYLE
     }
   }
 
   checkValidationState () {
-    if (this.getValidationState() === 'warning') {
-      return true
-    } else {
-      return false
-    }
+    return this.getValidationState() === WARNING_STYLE
   }
 
   handleLogInClick () {
