@@ -35,7 +35,7 @@ export default class EditRace extends Component {
     if (this.props.dbRaces[race].hasOwnProperty('subraces')) {
       this.openModal()
     } else {
-      this.props.updateSubrace('')
+      setTimeout(() => { this.props.updateSubrace('') })
     }
   }
 

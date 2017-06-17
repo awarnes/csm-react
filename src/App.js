@@ -62,6 +62,7 @@ export default class App extends Component {
     this.updatePrestige = this.updatePrestige.bind(this)
     this.updateBackground = this.updateBackground.bind(this)
     this.updateSkill = this.updateSkill.bind(this)
+    this.updateEquipment = this.updateEquipment.bind(this)
 
     this.createCharacter = this.createCharacter.bind(this)
   }
@@ -116,6 +117,10 @@ export default class App extends Component {
       }
 
       fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+        .then((response) => response.json())
+      .then((activeCharacter) => {
+        this.setState({activeCharacter})
+      })
       .catch((error) => {
         console.log(error)
       })
@@ -132,6 +137,10 @@ export default class App extends Component {
       }
 
       fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+        .then((response) => response.json())
+      .then((activeCharacter) => {
+        this.setState({activeCharacter})
+      })
       .catch((error) => {
         console.log(error)
       })
@@ -148,6 +157,10 @@ export default class App extends Component {
       }
 
       fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+        .then((response) => response.json())
+      .then((activeCharacter) => {
+        this.setState({activeCharacter})
+      })
       .catch((error) => {
         console.log(error)
       })
@@ -164,6 +177,10 @@ export default class App extends Component {
       }
 
       fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+        .then((response) => response.json())
+      .then((activeCharacter) => {
+        this.setState({activeCharacter})
+      })
       .catch((error) => {
         console.log(error)
       })
@@ -180,6 +197,10 @@ export default class App extends Component {
       }
 
       fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+        .then((response) => response.json())
+      .then((activeCharacter) => {
+        this.setState({activeCharacter})
+      })
       .catch((error) => {
         console.log(error)
       })
@@ -200,6 +221,10 @@ export default class App extends Component {
       }
 
       fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+        .then((response) => response.json())
+      .then((activeCharacter) => {
+        this.setState({activeCharacter})
+      })
       .catch((error) => {
         console.log(error)
       })
@@ -228,6 +253,39 @@ export default class App extends Component {
       .catch((error) => {
         console.log(error)
       })
+  }
+
+  updateEquipment (equipment, type) {
+    let newArray
+    if (_.has(this.state.activeCharacter.equipment, type)) {
+      newArray = this.state.activeCharacter.equipment[type].slice(0)
+      if (newArray.includes(equipment)) {
+        _.pull(newArray, equipment)
+      } else {
+        newArray.push(equipment)
+      }
+    } else {
+      newArray = new Array(equipment)
+    }
+
+    const newEquipment = Object.assign({}, this.state.activeCharacter.equipment, {[type]: newArray})
+
+    const newActiveCharacter = Object.assign({}, this.state.activeCharacter, {equipment: newEquipment})
+    this.setState({activeCharacter: newActiveCharacter}, () => {
+      const putData = {
+        method: 'PUT',
+        body: JSON.stringify(this.state.activeCharacter)
+      }
+
+      fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      .then((response) => response.json())
+      .then((activeCharacter) => {
+        this.setState({activeCharacter})
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    })
   }
 
   updateActiveCharacter (uid) {
@@ -268,14 +326,14 @@ export default class App extends Component {
   }
 
   componentWillMount () {
-    DATA_LOOKUP.forEach((url, state) => {
-      fetch(`${SERVER_ROOT}/${url}`)
+    DATA_LOOKUP.forEach((path) => {
+      fetch(`${SERVER_ROOT}/${path.url}.json`)
       .then((response) => response.json())
       .then((value) => {
-        this.setState({[state]: value})
+        this.setState({[path.state]: value})
       })
       .catch((error) => {
-        console.log(`ERROR fetching ${url}: ` + error)
+        console.log(`ERROR fetching ${path.url}: ` + error)
       })
     })
   }
@@ -323,6 +381,7 @@ export default class App extends Component {
               updateClass={this.updateClass}
               updatePrestige={this.updatePrestige}
               updateBackground={this.updateBackground}
+              updateEquipment={this.updateEquipment}
               dbCharacterClasses={this.state.dbCharacterClasses}
               dbPrestiges={this.state.dbPrestiges}
               dbRaces={this.state.dbRaces}

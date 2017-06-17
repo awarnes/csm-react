@@ -68,20 +68,20 @@ export default class EditCharacter extends Component {
 
             <Row bsClass='text-center'>
               <Button
-                type='button' bsSize='large'><Link to={`${this.props.match.url}/Races`}>Race</Link></Button>
+                type='button' bsSize='large'><Link id='editRaces-link' to={`${this.props.match.url}/Races`}>Race</Link></Button>
               <Button
-                type='button' bsSize='large'><Link to={`${this.props.match.url}/Classes`}>Class</Link></Button>
+                type='button' bsSize='large'><Link id='editClasses-link' to={`${this.props.match.url}/Classes`}>Class</Link></Button>
               <Button
-                type='button' bsSize='large'><Link to={`${this.props.match.url}/Backgrounds`}>Background</Link></Button>
+                type='button' bsSize='large'><Link id='editBackgrounds-link' to={`${this.props.match.url}/Backgrounds`}>Background</Link></Button>
             </Row>
 
             <Row bsClass='text-center'>
               <Button
-                type='button' bsSize='large'><Link to={`${this.props.match.url}/Skills`}>Skills</Link></Button>
+                type='button' bsSize='large'><Link id='editSkills-link' to={`${this.props.match.url}/Skills`}>Skills</Link></Button>
               <Button
                 type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Spells</Link></Button>
               <Button
-                type='button' bsSize='large'><Link to={`${this.props.match.url}/Equipment`}>Equipment</Link></Button>
+                type='button' bsSize='large'><Link id='editEquipment-link' to={`${this.props.match.url}/Equipment`}>Equipment</Link></Button>
             </Row>
 
             <Row bsClass='text-center'>
@@ -139,9 +139,8 @@ export default class EditCharacter extends Component {
 
               <Route path={`${this.props.match.url}/Equipment`} render={props => (<EditEquipment {...props}
                 dbEquipment={this.props.dbEquipment}
-                dbCharacterClasses={this.props.dbCharacterClasses}
                 activeCharacterEquipment={activeCharacterEquipment}
-                activeCharacterClass={activeCharacterClass} />)} />
+                updateEquipment={this.props.updateEquipment} />)} />
 
             </Well>
           </Col>
@@ -164,6 +163,7 @@ EditCharacter.propTypes = {
   updatePrestige: PropTypes.func,
   updateBackground: PropTypes.func,
   updateSkill: PropTypes.func,
+  updateEquipment: PropTypes.func,
   dbCharacterClasses: PropTypes.object,
   dbPrestiges: PropTypes.object,
   dbRaces: PropTypes.object,

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-
+import _ from 'lodash'
 import 'airbnb-js-shims' // to allow jest to understand Object.entries for parsing the character objects
-
+import {SUCCESS_STYLE, DEFAULT_STYLE} from '../utils'
 import { Button, Modal } from 'react-bootstrap'
 
 export default class EditEquipment extends Component {
@@ -16,7 +16,7 @@ export default class EditEquipment extends Component {
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.renderEquipmentButtons = this.renderEquipmentButtons.bind(this)
-    this.setEquipment = this.setEquipment.bind(this)
+    this.checkButtonStyle = this.checkButtonStyle.bind(this)
   }
 
   openModal (displayName) {
@@ -27,23 +27,49 @@ export default class EditEquipment extends Component {
     this.setState({showModal: false})
   }
 
-  setEquipment (currentEquipment) {
-
+  checkButtonStyle (item) {
+    if (_.has(this.props.activeCharacterEquipment, `${this.state.modalDisplay}`)) {
+      if (this.props.activeCharacterEquipment[`${this.state.modalDisplay}`].includes(item)) {
+        return SUCCESS_STYLE
+      } else {
+        return DEFAULT_STYLE
+      }
+    }
   }
-
   renderEquipmentButtons () {
-    const displayInfo = this.state.modalDisplay.toLowerCase() || 'armor'
-    if (this.props.dbEquipment) {
-      let equipmentButtons = Object.keys(this.props.dbEquipment[displayInfo]).map((item) => {
+    let equipmentButtons
+
+    if (this.state.modalDisplay === 'armor') {
+      equipmentButtons = Object.keys(this.props.dbEquipment['armor']).map((item) => {
         return <Button id={`${item}-btn`}
           key={`${item}-btn`}
-          onClick={() => {
-            console.log(item)
-          }}>{item}</Button>
+          onClick={() => { this.props.updateEquipment(item, this.state.modalDisplay) }}
+          bsStyle={this.checkButtonStyle(item)}>{item}</Button>
       })
-      return equipmentButtons
+    } else if (this.state.modalDisplay === 'weapons') {
+      equipmentButtons = Object.keys(this.props.dbEquipment['weapons']).map((item) => {
+        return <Button id={`${item}-btn`}
+          key={`${item}-btn`}
+          onClick={() => { this.props.updateEquipment(item, this.state.modalDisplay) }}
+          bsStyle={this.checkButtonStyle(item)}>{item}</Button>
+      })
+    } else if (this.state.modalDisplay === 'items') {
+      equipmentButtons = Object.keys(this.props.dbEquipment['items']).map((item) => {
+        return <Button id={`${item}-btn`}
+          key={`${item}-btn`}
+          onClick={() => { this.props.updateEquipment(item, this.state.modalDisplay) }}
+          bsStyle={this.checkButtonStyle(item)}>{item}</Button>
+      })
+    } else if (this.state.modalDisplay === 'tools') {
+      equipmentButtons = Object.keys(this.props.dbEquipment['tools']).map((item) => {
+        return <Button id={`${item}-btn`}
+          key={`${item}-btn`}
+          onClick={() => { this.props.updateEquipment(item, this.state.modalDisplay) }}
+          bsStyle={this.checkButtonStyle(item)}>{item}</Button>
+      })
     }
-    return null
+
+    return equipmentButtons
   }
 
   render () {
@@ -52,15 +78,15 @@ export default class EditEquipment extends Component {
         <h4 id='equipmentTitle'>Choose your Equipment!</h4>
         <h6 id='equipmentSubtitle'>Equipment helps you carry out tasks, protects you, and are the tools you use to smite enemies!</h6>
         <div id='equipmentButtons'>
-          <Button id='armor-btn' onClick={() => { this.openModal('Armor') }}>Armor</Button>
-          <Button id='weapons-btn' onClick={() => { this.openModal('Weapons') }}>Weapons</Button>
-          <Button id='items-btn' onClick={() => { this.openModal('Items') }}>Items</Button>
-          <Button id='tools-btn' onClick={() => { this.openModal('Tools') }}>Tools</Button>
+          <Button id='armor-btn' onClick={() => { this.openModal('armor') }}>Armor</Button>
+          <Button id='weapons-btn' onClick={() => { this.openModal('weapons') }}>Weapons</Button>
+          <Button id='items-btn' onClick={() => { this.openModal('items') }}>Items</Button>
+          <Button id='tools-btn' onClick={() => { this.openModal('tools') }}>Tools</Button>
         </div>
 
         <Modal show={this.state.showModal} onHide={this.closeModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Select your {this.state.modalDisplay}!</Modal.Title>
+            <Modal.Title style={{textTransform: 'capitalize'}}>Select your {this.state.modalDisplay}!</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {this.renderEquipmentButtons()}
@@ -76,7 +102,6 @@ export default class EditEquipment extends Component {
 
 EditEquipment.propTypes = {
   dbEquipment: PropTypes.object,
-  dbCharacterClasses: PropTypes.object,
   activeCharacterEquipment: PropTypes.object,
-  activeCharacterClass: PropTypes.string
+  updateEquipment: PropTypes.func
 }

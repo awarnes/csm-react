@@ -217,6 +217,30 @@ describe('The App', () => {
     expect(wrapper.state().activeCharacter.skills).toEqual([])
   })
 
+  it('updates the equipment for activeCharacter if no equipment existed previously when this.updateEquipment is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple'}})
+
+    app.updateEquipment('Leather', 'armor')
+
+    expect(wrapper.state().activeCharacter.equipment).toEqual({armor: ['Leather']})
+  })
+
+  it('updates the equipment for activeCharacter if the equipment object DOES exist when this.updateEquipment is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple', equipment: {armor: ['Leather']}}})
+
+    app.updateEquipment('Shield', 'armor')
+
+    expect(wrapper.state().activeCharacter.equipment).toEqual({armor: ['Leather', 'Shield']})
+  })
+
+  it('removes a equipment from activeCharacter if the equipment already existed when this.updateEquipment is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple', equipment: {armor: ['Leather', 'Shield']}}})
+
+    app.updateEquipment('Shield', 'armor')
+
+    expect(wrapper.state().activeCharacter.equipment).toEqual({armor: ['Leather']})
+  })
+
   describe('when routing', () => {
     let wrapper
 

@@ -2,7 +2,8 @@ import React from 'react'
 import EditCharacter from '../components/EditCharacter'
 import fetch from 'jest-fetch-mock'
 import { FAKE_SERVER_DATA } from '../test-data'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
+import {MemoryRouter} from 'react-router-dom'
 
 global.fetch = fetch
 
@@ -107,6 +108,46 @@ describe('EditCharacter', () => {
 
     it('displays a welcome message when the page loads', () => {
       expect(app.renderCharacterSummary()).toEqual('Hello!')
+    })
+  })
+
+  describe('the editing section', () => {
+    let wrapper, callback
+
+    beforeEach(() => {
+      callback = jest.fn()
+      wrapper = mount(
+        <MemoryRouter>
+          <EditCharacter
+            match={{params: {uid: 12345}, url: '/characters/12345/edit'}}
+            activeCharacter={{charName: 'Apheir'}}
+            activeAccount='John'
+            updateActiveCharacter={callback} />
+        </MemoryRouter>)
+      // app = wrapper.instance()
+    })
+
+    it('displays the base edit page when at "/characters/:uid/edit"', () => {
+      wrapper.node.history.push('/characters/12345/edit')
+
+      expect(wrapper.node.history.location.pathname).toEqual('/characters/12345/edit')
+      expect(wrapper.find('#editAbilityScores-btn').exists()).toBe(true)
+      expect(wrapper.find('#editing-section').find('#abScoresTitle').exists()).toBe(false)
+    })
+
+    it('displays the EditAbilityScore page when at "/characters/:uid/edit/AbilityScores"', () => {
+      wrapper.find('#editAbilityScores-link').simulate('click', {button: 0})
+      expect(wrapper.node.history.location.pathname).toEqual('/characters/12345/edit/AbilityScores')
+    })
+
+    it('displays the EditEquipment page when at "/characters/:uid/edit/Equipment"', () => {
+      wrapper.find('#editEquipment-link').simulate('click', {button: 0})
+      expect(wrapper.node.history.location.pathname).toEqual('/characters/12345/edit/Equipment')
+    })
+
+    it('displays the EditSkills page when at "/characters/:uid/edit/Skills"', () => {
+      wrapper.find('#editSkills-link').simulate('click', {button: 0})
+      expect(wrapper.node.history.location.pathname).toEqual('/characters/12345/edit/Skills')
     })
   })
 })

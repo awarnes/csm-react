@@ -82,6 +82,7 @@ export default class EditSkills extends Component {
             bsStyle={this.checkProficient(skill)}
           >{skill}</Button>
         }
+        return null
       })
     } else if (this.state.modalDisplay === 'all') {
       skillButtons = Object.keys(this.props.dbSkills).map((skill) => {
