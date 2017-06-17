@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import {SUCCESS_STYLE, WARNING_STYLE} from '../utils'
 import { Button, FormControl, FormGroup } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 /* global fetch */
-
-const WARNING_STYLE = 'warning'
-const SUCCESS_STYLE = 'success'
 
 export default class LogInPage extends Component {
   constructor (props) {

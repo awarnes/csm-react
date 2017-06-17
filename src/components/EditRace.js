@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-
+import {SUCCESS_STYLE, DEFAULT_STYLE} from '../utils'
 import 'airbnb-js-shims' // to allow jest to understand Object.entries for parsing the character objects
 
 import { Button, OverlayTrigger, Tooltip, Modal } from 'react-bootstrap'
-
-const SUCCESS_STYLE = 'success'
-const DEFAULT_STYLE = 'default'
 
 export default class EditRace extends Component {
   constructor (props) {
@@ -38,7 +35,7 @@ export default class EditRace extends Component {
     if (this.props.dbRaces[race].hasOwnProperty('subraces')) {
       this.openModal()
     } else {
-      this.props.updateSubrace('')
+      setTimeout(() => { this.props.updateSubrace('') })
     }
   }
 

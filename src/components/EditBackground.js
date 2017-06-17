@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import {SUCCESS_STYLE, DEFAULT_STYLE} from '../utils'
 
 import 'airbnb-js-shims' // to allow jest to understand Object.entries for parsing the character objects
 
 import { Button } from 'react-bootstrap'
-
-const SUCCESS_STYLE = 'success'
-const DEFAULT_STYLE = 'default'
 
 export default class EditBackground extends Component {
   constructor (props) {
@@ -22,11 +20,7 @@ export default class EditBackground extends Component {
   }
 
   checkButtonStyle (property) {
-    if (this.props.activeCharacterBackground === property) {
-      return SUCCESS_STYLE
-    } else {
-      return DEFAULT_STYLE
-    }
+    return this.props.activeCharacterBackground === property ? SUCCESS_STYLE : DEFAULT_STYLE
   }
 
   renderBackgroundButtons () {

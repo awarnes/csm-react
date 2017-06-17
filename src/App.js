@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import './App.css'
 
@@ -13,6 +14,16 @@ import { BASE_ABILITY_SCORES } from './utils'
 /* global fetch */
 
 const SERVER_ROOT = 'https://csm-5e.firebaseio.com'
+
+const DATA_LOOKUP = [
+  {url: 'backgrounds', state: 'dbBackgrounds'},
+  {url: 'skills', state: 'dbSkills'},
+  {url: 'klasses', state: 'dbCharacterClasses'},
+  {url: 'prestiges', state: 'dbPrestiges'},
+  {url: 'races', state: 'dbRaces'},
+  {url: 'subraces', state: 'dbSubraces'},
+  {url: 'equipment', state: 'dbEquipment'}
+]
 
 export default class App extends Component {
   constructor (props) {
@@ -31,7 +42,8 @@ export default class App extends Component {
       dbCharacterClasses: {},
       dbPrestiges: {},
       dbRaces: {},
-      dbSubraces: {}
+      dbSubraces: {},
+      dbEquipment: {}
     }
 
     this.onLoginAccountNameInput = this.onLoginAccountNameInput.bind(this)
@@ -50,6 +62,7 @@ export default class App extends Component {
     this.updatePrestige = this.updatePrestige.bind(this)
     this.updateBackground = this.updateBackground.bind(this)
     this.updateSkill = this.updateSkill.bind(this)
+    this.updateEquipment = this.updateEquipment.bind(this)
 
     this.createCharacter = this.createCharacter.bind(this)
   }
@@ -94,7 +107,7 @@ export default class App extends Component {
   }
 
   updateAbilityScore (abilityScores) {
-    let newScores = Object.assign({}, BASE_ABILITY_SCORES, this.state.activeCharacter.abilityScores, abilityScores)
+    const newScores = Object.assign({}, BASE_ABILITY_SCORES, this.state.activeCharacter.abilityScores, abilityScores)
 
     const newActiveCharacter = Object.assign({}, this.state.activeCharacter, {abilityScores: newScores})
     this.setState({activeCharacter: newActiveCharacter}, () => {
@@ -104,6 +117,10 @@ export default class App extends Component {
       }
 
       fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+        .then((response) => response.json())
+      .then((activeCharacter) => {
+        this.setState({activeCharacter})
+      })
       .catch((error) => {
         console.log(error)
       })
@@ -111,7 +128,7 @@ export default class App extends Component {
   }
 
   updateRace (race) {
-    let newRace = Object.assign({}, this.state.activeCharacter, {race})
+    const newRace = Object.assign({}, this.state.activeCharacter, {race})
 
     this.setState({activeCharacter: newRace}, () => {
       const putData = {
@@ -120,6 +137,10 @@ export default class App extends Component {
       }
 
       fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+        .then((response) => response.json())
+      .then((activeCharacter) => {
+        this.setState({activeCharacter})
+      })
       .catch((error) => {
         console.log(error)
       })
@@ -127,7 +148,7 @@ export default class App extends Component {
   }
 
   updateSubrace (subrace) {
-    let newSubrace = Object.assign({}, this.state.activeCharacter, {subrace})
+    const newSubrace = Object.assign({}, this.state.activeCharacter, {subrace})
 
     this.setState({activeCharacter: newSubrace}, () => {
       const putData = {
@@ -136,6 +157,10 @@ export default class App extends Component {
       }
 
       fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+        .then((response) => response.json())
+      .then((activeCharacter) => {
+        this.setState({activeCharacter})
+      })
       .catch((error) => {
         console.log(error)
       })
@@ -143,7 +168,7 @@ export default class App extends Component {
   }
 
   updateClass (characterClass) {
-    let newCharacterClass = Object.assign({}, this.state.activeCharacter, {klass: characterClass})
+    const newCharacterClass = Object.assign({}, this.state.activeCharacter, {klass: characterClass})
 
     this.setState({activeCharacter: newCharacterClass}, () => {
       const putData = {
@@ -152,6 +177,10 @@ export default class App extends Component {
       }
 
       fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+        .then((response) => response.json())
+      .then((activeCharacter) => {
+        this.setState({activeCharacter})
+      })
       .catch((error) => {
         console.log(error)
       })
@@ -159,7 +188,7 @@ export default class App extends Component {
   }
 
   updatePrestige (prestige) {
-    let newPrestige = Object.assign({}, this.state.activeCharacter, {prestige})
+    const newPrestige = Object.assign({}, this.state.activeCharacter, {prestige})
 
     this.setState({activeCharacter: newPrestige}, () => {
       const putData = {
@@ -168,6 +197,10 @@ export default class App extends Component {
       }
 
       fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+        .then((response) => response.json())
+      .then((activeCharacter) => {
+        this.setState({activeCharacter})
+      })
       .catch((error) => {
         console.log(error)
       })
@@ -175,7 +208,7 @@ export default class App extends Component {
   }
 
   updateBackground (background) {
-    let newBackground = Object.assign({}, this.state.activeCharacter, {background})
+    const newBackground = Object.assign({}, this.state.activeCharacter, {background})
 
     this.setState({activeCharacter: newBackground}, () => {
       this.state.dbBackgrounds[this.state.activeCharacter.background].skills.forEach((skill) => {
@@ -188,6 +221,10 @@ export default class App extends Component {
       }
 
       fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+        .then((response) => response.json())
+      .then((activeCharacter) => {
+        this.setState({activeCharacter})
+      })
       .catch((error) => {
         console.log(error)
       })
@@ -195,17 +232,13 @@ export default class App extends Component {
   }
 
   updateSkill (skill) {
-    let newSkills
-    if (this.state.activeCharacter.hasOwnProperty('skills')) {
-      newSkills = this.state.activeCharacter.skills
+    const currentCharacter = Object.assign({}, this.state.activeCharacter)
+    const newSkills = _.get(currentCharacter, 'skills', [])
 
-      if (newSkills.indexOf(skill) === -1) {
-        newSkills.push(skill)
-      } else {
-        newSkills.splice(newSkills.indexOf(skill), 1)
-      }
+    if (newSkills.indexOf(skill) === -1) {
+      newSkills.push(skill)
     } else {
-      newSkills = new Array(skill)
+      newSkills.splice(newSkills.indexOf(skill), 1)
     }
 
     const newActiveCharacter = Object.assign({}, this.state.activeCharacter, {skills: newSkills})
@@ -220,6 +253,39 @@ export default class App extends Component {
       .catch((error) => {
         console.log(error)
       })
+  }
+
+  updateEquipment (equipment, type) {
+    let newArray
+    if (_.has(this.state.activeCharacter.equipment, type)) {
+      newArray = this.state.activeCharacter.equipment[type].slice(0)
+      if (newArray.includes(equipment)) {
+        _.pull(newArray, equipment)
+      } else {
+        newArray.push(equipment)
+      }
+    } else {
+      newArray = new Array(equipment)
+    }
+
+    const newEquipment = Object.assign({}, this.state.activeCharacter.equipment, {[type]: newArray})
+
+    const newActiveCharacter = Object.assign({}, this.state.activeCharacter, {equipment: newEquipment})
+    this.setState({activeCharacter: newActiveCharacter}, () => {
+      const putData = {
+        method: 'PUT',
+        body: JSON.stringify(this.state.activeCharacter)
+      }
+
+      fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      .then((response) => response.json())
+      .then((activeCharacter) => {
+        this.setState({activeCharacter})
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    })
   }
 
   updateActiveCharacter (uid) {
@@ -260,59 +326,16 @@ export default class App extends Component {
   }
 
   componentWillMount () {
-    fetch('https://csm-5e.firebaseio.com/backgrounds.json')
+    DATA_LOOKUP.forEach((path) => {
+      fetch(`${SERVER_ROOT}/${path.url}.json`)
       .then((response) => response.json())
-      .then((backgrounds) => {
-        this.setState({dbBackgrounds: backgrounds})
+      .then((value) => {
+        this.setState({[path.state]: value})
       })
       .catch((error) => {
-        console.log('Backgrounds: ' + error)
+        console.log(`ERROR fetching ${path.url}: ` + error)
       })
-
-    fetch('https://csm-5e.firebaseio.com/skills.json')
-      .then((response) => response.json())
-      .then((skills) => {
-        this.setState({dbSkills: skills})
-      })
-      .catch((error) => {
-        console.log('Skills: ' + error)
-      })
-
-    fetch('https://csm-5e.firebaseio.com/races.json')
-      .then((response) => response.json())
-      .then((races) => {
-        this.setState({dbRaces: races})
-      })
-      .catch((error) => {
-        console.log('Races: ' + error)
-      })
-
-    fetch('https://csm-5e.firebaseio.com/subraces.json')
-      .then((response) => response.json())
-      .then((subraces) => {
-        this.setState({dbSubraces: subraces})
-      })
-      .catch((error) => {
-        console.log('Subraces: ' + error)
-      })
-
-    fetch('https://csm-5e.firebaseio.com/klasses.json')
-      .then((response) => response.json())
-      .then((characterClasses) => {
-        this.setState({dbCharacterClasses: characterClasses})
-      })
-      .catch((error) => {
-        console.log('Classes: ' + error)
-      })
-
-    fetch('https://csm-5e.firebaseio.com/prestiges.json')
-      .then((response) => response.json())
-      .then((prestiges) => {
-        this.setState({dbPrestiges: prestiges})
-      })
-      .catch((error) => {
-        console.log('Prestiges: ' + error)
-      })
+    })
   }
 
   render () {
@@ -358,6 +381,7 @@ export default class App extends Component {
               updateClass={this.updateClass}
               updatePrestige={this.updatePrestige}
               updateBackground={this.updateBackground}
+              updateEquipment={this.updateEquipment}
               dbCharacterClasses={this.state.dbCharacterClasses}
               dbPrestiges={this.state.dbPrestiges}
               dbRaces={this.state.dbRaces}
@@ -365,6 +389,7 @@ export default class App extends Component {
               dbSkills={this.state.dbSkills}
               dbBackgrounds={this.state.dbBackgrounds}
               updateSkill={this.updateSkill}
+              dbEquipment={this.state.dbEquipment}
             />)} />
         </div>
       </Router>

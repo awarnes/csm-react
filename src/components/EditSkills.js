@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-
+import {SUCCESS_STYLE, DEFAULT_STYLE} from '../utils'
 import 'airbnb-js-shims' // to allow jest to understand Object.entries for parsing the character objects
 
 import { ListGroup, ListGroupItem, Panel, Button, Modal } from 'react-bootstrap'
 
 /* global alert */
-
-const SUCCESS_STYLE = 'success'
-const DEFAULT_STYLE = 'default'
 
 export default class EditSkills extends Component {
   constructor (props) {
@@ -35,11 +32,7 @@ export default class EditSkills extends Component {
   }
 
   checkProficient (skill) {
-    if (this.props.activeCharacterSkills.indexOf(skill) !== -1) {
-      return SUCCESS_STYLE
-    } else {
-      return DEFAULT_STYLE
-    }
+    return this.props.activeCharacterSkills.includes(skill) ? SUCCESS_STYLE : DEFAULT_STYLE
   }
 
   setSkill (skill) {
@@ -89,6 +82,7 @@ export default class EditSkills extends Component {
             bsStyle={this.checkProficient(skill)}
           >{skill}</Button>
         }
+        return null
       })
     } else if (this.state.modalDisplay === 'all') {
       skillButtons = Object.keys(this.props.dbSkills).map((skill) => {
