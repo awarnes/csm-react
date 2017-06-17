@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import _ from 'lodash'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import './App.css'
 
@@ -13,6 +14,16 @@ import { BASE_ABILITY_SCORES } from './utils'
 /* global fetch */
 
 const SERVER_ROOT = 'https://csm-5e.firebaseio.com'
+
+const DATA_LOOKUP = [
+  {url: 'backgrounds', state: 'dbBackgrounds'},
+  {url: 'skills', state: 'dbSkills'},
+  {url: 'klasses', state: 'dbCharacterClasses'},
+  {url: 'prestiges', state: 'dbPrestiges'},
+  {url: 'races', state: 'dbRaces'},
+  {url: 'subraces', state: 'dbSubraces'},
+  {url: 'equipment', state: 'dbEquipment'}
+]
 
 export default class App extends Component {
   constructor (props) {
@@ -95,7 +106,7 @@ export default class App extends Component {
   }
 
   updateAbilityScore (abilityScores) {
-    let newScores = Object.assign({}, BASE_ABILITY_SCORES, this.state.activeCharacter.abilityScores, abilityScores)
+    const newScores = Object.assign({}, BASE_ABILITY_SCORES, this.state.activeCharacter.abilityScores, abilityScores)
 
     const newActiveCharacter = Object.assign({}, this.state.activeCharacter, {abilityScores: newScores})
     this.setState({activeCharacter: newActiveCharacter}, () => {
@@ -112,7 +123,7 @@ export default class App extends Component {
   }
 
   updateRace (race) {
-    let newRace = Object.assign({}, this.state.activeCharacter, {race})
+    const newRace = Object.assign({}, this.state.activeCharacter, {race})
 
     this.setState({activeCharacter: newRace}, () => {
       const putData = {
@@ -128,7 +139,7 @@ export default class App extends Component {
   }
 
   updateSubrace (subrace) {
-    let newSubrace = Object.assign({}, this.state.activeCharacter, {subrace})
+    const newSubrace = Object.assign({}, this.state.activeCharacter, {subrace})
 
     this.setState({activeCharacter: newSubrace}, () => {
       const putData = {
@@ -144,7 +155,7 @@ export default class App extends Component {
   }
 
   updateClass (characterClass) {
-    let newCharacterClass = Object.assign({}, this.state.activeCharacter, {klass: characterClass})
+    const newCharacterClass = Object.assign({}, this.state.activeCharacter, {klass: characterClass})
 
     this.setState({activeCharacter: newCharacterClass}, () => {
       const putData = {
@@ -160,7 +171,7 @@ export default class App extends Component {
   }
 
   updatePrestige (prestige) {
-    let newPrestige = Object.assign({}, this.state.activeCharacter, {prestige})
+    const newPrestige = Object.assign({}, this.state.activeCharacter, {prestige})
 
     this.setState({activeCharacter: newPrestige}, () => {
       const putData = {
@@ -176,7 +187,7 @@ export default class App extends Component {
   }
 
   updateBackground (background) {
-    let newBackground = Object.assign({}, this.state.activeCharacter, {background})
+    const newBackground = Object.assign({}, this.state.activeCharacter, {background})
 
     this.setState({activeCharacter: newBackground}, () => {
       this.state.dbBackgrounds[this.state.activeCharacter.background].skills.forEach((skill) => {
@@ -196,17 +207,13 @@ export default class App extends Component {
   }
 
   updateSkill (skill) {
-    let newSkills
-    if (this.state.activeCharacter.hasOwnProperty('skills')) {
-      newSkills = this.state.activeCharacter.skills
+    const currentCharacter = Object.assign({}, this.state.activeCharacter)
+    const newSkills = _.get(currentCharacter, 'skills', [])
 
-      if (newSkills.indexOf(skill) === -1) {
-        newSkills.push(skill)
-      } else {
-        newSkills.splice(newSkills.indexOf(skill), 1)
-      }
+    if (newSkills.indexOf(skill) === -1) {
+      newSkills.push(skill)
     } else {
-      newSkills = new Array(skill)
+      newSkills.splice(newSkills.indexOf(skill), 1)
     }
 
     const newActiveCharacter = Object.assign({}, this.state.activeCharacter, {skills: newSkills})
@@ -261,68 +268,16 @@ export default class App extends Component {
   }
 
   componentWillMount () {
-    fetch('https://csm-5e.firebaseio.com/backgrounds.json')
+    DATA_LOOKUP.forEach((url, state) => {
+      fetch(`${SERVER_ROOT}/${url}`)
       .then((response) => response.json())
-      .then((backgrounds) => {
-        this.setState({dbBackgrounds: backgrounds})
+      .then((value) => {
+        this.setState({[state]: value})
       })
       .catch((error) => {
-        console.log('Backgrounds: ' + error)
+        console.log(`ERROR fetching ${url}: ` + error)
       })
-
-    fetch('https://csm-5e.firebaseio.com/equipment.json')
-      .then((response) => response.json())
-      .then((equipment) => {
-        this.setState({dbEquipment: equipment})
-      })
-      .catch((error) => {
-        console.log('Equipment: ' + error)
-      })
-
-    fetch('https://csm-5e.firebaseio.com/skills.json')
-      .then((response) => response.json())
-      .then((skills) => {
-        this.setState({dbSkills: skills})
-      })
-      .catch((error) => {
-        console.log('Skills: ' + error)
-      })
-
-    fetch('https://csm-5e.firebaseio.com/races.json')
-      .then((response) => response.json())
-      .then((races) => {
-        this.setState({dbRaces: races})
-      })
-      .catch((error) => {
-        console.log('Races: ' + error)
-      })
-
-    fetch('https://csm-5e.firebaseio.com/subraces.json')
-      .then((response) => response.json())
-      .then((subraces) => {
-        this.setState({dbSubraces: subraces})
-      })
-      .catch((error) => {
-        console.log('Subraces: ' + error)
-      })
-
-    fetch('https://csm-5e.firebaseio.com/klasses.json')
-      .then((response) => response.json())
-      .then((characterClasses) => {
-        this.setState({dbCharacterClasses: characterClasses})
-      })
-      .catch((error) => {
-        console.log('Classes: ' + error)
-      })
-
-    fetch('https://csm-5e.firebaseio.com/prestiges.json')
-      .then((response) => response.json())
-      .then((prestiges) => {
-        this.setState({dbPrestiges: prestiges})
-      })
-      .catch((error) => {
-        console.log('Prestiges: ' + error)
-      })
+    })
   }
 
   render () {

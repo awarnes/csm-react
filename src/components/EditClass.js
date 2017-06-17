@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-
+import {SUCCESS_STYLE, DEFAULT_STYLE} from '../utils'
 import 'airbnb-js-shims' // to allow jest to understand Object.entries for parsing the character objects
 
 import { Button, Modal } from 'react-bootstrap'
-
-const SUCCESS_STYLE = 'success'
-const DEFAULT_STYLE = 'default'
 
 export default class EditClass extends Component {
   constructor (props) {
@@ -65,9 +62,9 @@ export default class EditClass extends Component {
   }
 
   renderPrestigeButtons () {
-    if (Object.keys(this.props.dbCharacterClasses).indexOf(this.props.activeCharacterClass) !== -1) {
+    if (Object.keys(this.props.dbCharacterClasses).includes(this.props.activeCharacterClass)) {
       const prestigeButtons = Object.keys(this.props.dbPrestiges).filter((key) => {
-        return Object.keys(this.props.dbCharacterClasses[this.props.activeCharacterClass].prestiges).indexOf(key) !== -1
+        return Object.keys(this.props.dbCharacterClasses[this.props.activeCharacterClass].prestiges).includes(key)
       }).map((entry) => {
         return <Button type='button'
           id={`${entry}-btn`}

@@ -16,6 +16,7 @@ export default class EditEquipment extends Component {
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.renderEquipmentButtons = this.renderEquipmentButtons.bind(this)
+    this.setEquipment = this.setEquipment.bind(this)
   }
 
   openModal (displayName) {
@@ -35,10 +36,10 @@ export default class EditEquipment extends Component {
     if (this.props.dbEquipment) {
       let equipmentButtons = Object.keys(this.props.dbEquipment[displayInfo]).map((item) => {
         return <Button id={`${item}-btn`}
-                       key={`${item}-btn`}
-                       onClick={() => {
-                         console.log(item)
-                       }}>{item}</Button>
+          key={`${item}-btn`}
+          onClick={() => {
+            console.log(item)
+          }}>{item}</Button>
       })
       return equipmentButtons
     }
