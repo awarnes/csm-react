@@ -9,9 +9,10 @@ import EditRace from './EditRace'
 import EditClass from './EditClass'
 import EditBackground from './EditBackground'
 import EditSkills from './EditSkills'
+import EditEquipment from './EditEquipment'
+import EditName from './EditName'
 
 import { BASE_ABILITY_SCORES } from '../utils'
-import EditEquipment from './EditEquipment'
 
 export default class EditCharacter extends Component {
   constructor (props) {
@@ -29,7 +30,8 @@ export default class EditCharacter extends Component {
   }
 
   render () {
-    let abilityScores, activeCharacterRace, activeCharacterSubrace, activeCharacterClass, activeCharacterPrestige, activeCharacterBackground, activeCharacterSkills, activeCharacterEquipment
+    let abilityScores, activeCharacterRace, activeCharacterSubrace, activeCharacterClass, activeCharacterPrestige
+    let activeCharacterBackground, activeCharacterSkills, activeCharacterEquipment
 
     abilityScores = this.props.activeCharacter.abilityScores || BASE_ABILITY_SCORES
 
@@ -86,7 +88,7 @@ export default class EditCharacter extends Component {
 
             <Row bsClass='text-center'>
               <Button
-                type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Name</Link></Button>
+                type='button' bsSize='large'><Link to={`${this.props.match.url}/Name`}>Name</Link></Button>
               <Button
                 type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Description</Link></Button>
               <Button
@@ -142,6 +144,10 @@ export default class EditCharacter extends Component {
                 activeCharacterEquipment={activeCharacterEquipment}
                 updateEquipment={this.props.updateEquipment} />)} />
 
+              <Route path={`${this.props.match.url}/Name`} render={props => (<EditName {...props}
+                activeCharacterName={this.props.activeCharacterName}
+                updateName={this.props.updateName} />)} />
+
             </Well>
           </Col>
 
@@ -170,5 +176,7 @@ EditCharacter.propTypes = {
   dbSubraces: PropTypes.object,
   dbSkills: PropTypes.object,
   dbBackgrounds: PropTypes.object,
-  dbEquipment: PropTypes.object
+  dbEquipment: PropTypes.object,
+  updateName: PropTypes.func,
+  activeCharacterName: PropTypes.string
 }

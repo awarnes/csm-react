@@ -63,6 +63,7 @@ export default class App extends Component {
     this.updateBackground = this.updateBackground.bind(this)
     this.updateSkill = this.updateSkill.bind(this)
     this.updateEquipment = this.updateEquipment.bind(this)
+    this.updateName = this.updateName.bind(this)
 
     this.createCharacter = this.createCharacter.bind(this)
   }
@@ -288,6 +289,24 @@ export default class App extends Component {
     })
   }
 
+  updateName (event) {
+    this.setState({characterName: event.target.value}, () => {
+      let newName = Object.assign({}, this.state.activeCharacter, {charName: this.state.characterName})
+
+      this.setState({activeCharacter: newName}, () => {
+        const putData = {
+          method: 'PUT',
+          body: JSON.stringify(this.state.activeCharacter)
+        }
+
+        fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+        .catch((error) => {
+          console.log(error)
+        })
+      })
+    })
+  }
+
   updateActiveCharacter (uid) {
     this.setState({activeCharacterId: uid})
 
@@ -390,6 +409,8 @@ export default class App extends Component {
               dbBackgrounds={this.state.dbBackgrounds}
               updateSkill={this.updateSkill}
               dbEquipment={this.state.dbEquipment}
+              updateName={this.updateName}
+              activeCharacterName={this.state.characterName}
             />)} />
         </div>
       </Router>

@@ -1,13 +1,7 @@
 import React from 'react'
 import EditCharacter from '../components/EditCharacter'
-import fetch from 'jest-fetch-mock'
-import { FAKE_SERVER_DATA } from '../test-data'
 import { shallow, mount } from 'enzyme'
 import {MemoryRouter} from 'react-router-dom'
-
-global.fetch = fetch
-
-fetch.mockResponse(JSON.stringify(FAKE_SERVER_DATA))
 
 /* global it describe expect beforeEach jest */
 
