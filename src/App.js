@@ -22,7 +22,8 @@ const DATA_LOOKUP = [
   {url: 'prestiges', state: 'dbPrestiges'},
   {url: 'races', state: 'dbRaces'},
   {url: 'subraces', state: 'dbSubraces'},
-  {url: 'equipment', state: 'dbEquipment'}
+  {url: 'equipment', state: 'dbEquipment'},
+  {url: 'spells', state: 'dbSpells'}
 ]
 
 export default class App extends Component {
@@ -44,7 +45,8 @@ export default class App extends Component {
       dbRaces: {},
       dbSubraces: {},
       dbEquipment: {},
-      descText: ''
+      descText: '',
+      dbSpells: []
     }
 
     this.onLoginAccountNameInput = this.onLoginAccountNameInput.bind(this)
@@ -66,6 +68,7 @@ export default class App extends Component {
     this.updateEquipment = this.updateEquipment.bind(this)
     this.updateName = this.updateName.bind(this)
     this.updateDescription = this.updateDescription.bind(this)
+    this.updateSpellBook = this.updateSpellBook.bind(this)
 
     this.createCharacter = this.createCharacter.bind(this)
   }
@@ -258,6 +261,30 @@ export default class App extends Component {
       })
   }
 
+  updateSpellBook (spell) {
+    const currentCharacter = Object.assign({}, this.state.activeCharacter)
+    const newSpells = _.get(currentCharacter, 'spellbook', [])
+
+    if (newSpells.indexOf(spell) === -1) {
+      newSpells.push(spell)
+    } else {
+      newSpells.splice(newSpells.indexOf(spell), 1)
+    }
+
+    const newActiveCharacter = Object.assign({}, this.state.activeCharacter, {spellbook: newSpells})
+    this.setState({activeCharacter: newActiveCharacter})
+
+    const putData = {
+      method: 'PUT',
+      body: JSON.stringify(this.state.activeCharacter)
+    }
+
+    fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
   updateEquipment (equipment, type) {
     let newArray
     if (_.has(this.state.activeCharacter.equipment, type)) {
@@ -293,7 +320,7 @@ export default class App extends Component {
 
   updateName (event) {
     this.setState({characterName: event.target.value}, () => {
-      let newName = Object.assign({}, this.state.activeCharacter, {charName: this.state.characterName})
+      const newName = Object.assign({}, this.state.activeCharacter, {charName: this.state.characterName})
 
       this.setState({activeCharacter: newName}, () => {
         const putData = {
@@ -311,7 +338,7 @@ export default class App extends Component {
 
   updateDescription (event) {
     this.setState({descText: event.target.value}, () => {
-      let newDesc = Object.assign({}, this.state.activeCharacter, {descText: this.state.descText})
+      const newDesc = Object.assign({}, this.state.activeCharacter, {descText: this.state.descText})
 
       this.setState({activeCharacter: newDesc}, () => {
         const putData = {
@@ -433,6 +460,8 @@ export default class App extends Component {
               activeCharacterName={this.state.characterName}
               descText={this.state.descText}
               updateDescription={this.updateDescription}
+              updateSpellBook={this.updateSpellBook}
+              dbSpells={this.state.dbSpells}
             />)} />
         </div>
       </Router>

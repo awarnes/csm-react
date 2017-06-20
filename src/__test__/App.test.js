@@ -241,6 +241,30 @@ describe('The App', () => {
     expect(wrapper.state().activeCharacter.equipment).toEqual({armor: ['Leather']})
   })
 
+  it('updates the name from activeCharacter  when this.updateName is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple'}})
+
+    app.updateName({target: {value: 'Aaron'}})
+
+    expect(wrapper.state().activeCharacter.charName).toEqual('Aaron')
+  })
+
+  it('updates the description from activeCharacter when this.updateDescription is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple'}})
+
+    app.updateDescription({target: {value: 'description'}})
+
+    expect(wrapper.state().activeCharacter.descText).toEqual('description')
+  })
+
+  it('updates the spellbook from activeCharacter when this.updateSpellBook is called', () => {
+    wrapper.setState({activeCharacter: {name: 'Apple'}})
+
+    app.updateSpellBook('Magic Missile')
+
+    expect(wrapper.state().activeCharacter.spellbook).toEqual(['Magic Missile'])
+  })
+
   describe('when routing', () => {
     let wrapper
 

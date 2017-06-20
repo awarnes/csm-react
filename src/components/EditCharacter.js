@@ -12,6 +12,7 @@ import EditSkills from './EditSkills'
 import EditEquipment from './EditEquipment'
 import EditName from './EditName'
 import EditDescription from './EditDescription'
+import EditSpells from './EditSpells'
 
 import { BASE_ABILITY_SCORES } from '../utils'
 
@@ -32,7 +33,7 @@ export default class EditCharacter extends Component {
 
   render () {
     let abilityScores, activeCharacterRace, activeCharacterSubrace, activeCharacterClass, activeCharacterPrestige
-    let activeCharacterBackground, activeCharacterSkills, activeCharacterEquipment
+    let activeCharacterBackground, activeCharacterSkills, activeCharacterEquipment, activeCharacterSpellBook
 
     abilityScores = this.props.activeCharacter.abilityScores || BASE_ABILITY_SCORES
 
@@ -49,6 +50,8 @@ export default class EditCharacter extends Component {
     activeCharacterSkills = this.props.activeCharacter.skills || []
 
     activeCharacterEquipment = this.props.activeCharacter.equipment || {}
+
+    activeCharacterSpellBook = this.props.activeCharacter.spellbook || []
 
     return (
       <Grid>
@@ -82,7 +85,7 @@ export default class EditCharacter extends Component {
               <Button
                 type='button' bsSize='large'><Link id='editSkills-link' to={`${this.props.match.url}/Skills`}>Skills</Link></Button>
               <Button
-                type='button' bsSize='large' disabled><Link id='editSpells-link' to='/' style={{pointerEvents: 'none'}}>Spells</Link></Button>
+                type='button' bsSize='large'><Link id='editSpells-link' to={`${this.props.match.url}/Spells`} >Spells</Link></Button>
               <Button
                 type='button' bsSize='large'><Link id='editEquipment-link' to={`${this.props.match.url}/Equipment`}>Equipment</Link></Button>
             </Row>
@@ -140,6 +143,11 @@ export default class EditCharacter extends Component {
                 dbSkills={this.props.dbSkills}
                 updateSkill={this.props.updateSkill} />)} />
 
+              <Route path={`${this.props.match.url}/Spells`} render={props => (<EditSpells {...props}
+                dbSpells={this.props.dbSpells}
+                updateSpellBook={this.props.updateSpellBook}
+                activeCharacterSpellBook={activeCharacterSpellBook} />)} />
+
               <Route path={`${this.props.match.url}/Equipment`} render={props => (<EditEquipment {...props}
                 dbEquipment={this.props.dbEquipment}
                 activeCharacterEquipment={activeCharacterEquipment}
@@ -185,5 +193,7 @@ EditCharacter.propTypes = {
   updateName: PropTypes.func,
   activeCharacterName: PropTypes.string,
   descText: PropTypes.string,
-  updateDescription: PropTypes.func
+  updateDescription: PropTypes.func,
+  updateSpellBook: PropTypes.func,
+  dbSpells: PropTypes.array
 }
