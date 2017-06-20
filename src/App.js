@@ -43,7 +43,8 @@ export default class App extends Component {
       dbPrestiges: {},
       dbRaces: {},
       dbSubraces: {},
-      dbEquipment: {}
+      dbEquipment: {},
+      descText: ''
     }
 
     this.onLoginAccountNameInput = this.onLoginAccountNameInput.bind(this)
@@ -64,6 +65,7 @@ export default class App extends Component {
     this.updateSkill = this.updateSkill.bind(this)
     this.updateEquipment = this.updateEquipment.bind(this)
     this.updateName = this.updateName.bind(this)
+    this.updateDescription = this.updateDescription.bind(this)
 
     this.createCharacter = this.createCharacter.bind(this)
   }
@@ -307,6 +309,24 @@ export default class App extends Component {
     })
   }
 
+  updateDescription (event) {
+    this.setState({descText: event.target.value}, () => {
+      let newDesc = Object.assign({}, this.state.activeCharacter, {descText: this.state.descText})
+
+      this.setState({activeCharacter: newDesc}, () => {
+        const putData = {
+          method: 'PUT',
+          body: JSON.stringify(this.state.activeCharacter)
+        }
+
+        fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+        .catch((error) => {
+          console.log(error)
+        })
+      })
+    })
+  }
+
   updateActiveCharacter (uid) {
     this.setState({activeCharacterId: uid})
 
@@ -411,6 +431,8 @@ export default class App extends Component {
               dbEquipment={this.state.dbEquipment}
               updateName={this.updateName}
               activeCharacterName={this.state.characterName}
+              descText={this.state.descText}
+              updateDescription={this.updateDescription}
             />)} />
         </div>
       </Router>

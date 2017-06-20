@@ -11,6 +11,7 @@ import EditBackground from './EditBackground'
 import EditSkills from './EditSkills'
 import EditEquipment from './EditEquipment'
 import EditName from './EditName'
+import EditDescription from './EditDescription'
 
 import { BASE_ABILITY_SCORES } from '../utils'
 
@@ -81,16 +82,16 @@ export default class EditCharacter extends Component {
               <Button
                 type='button' bsSize='large'><Link id='editSkills-link' to={`${this.props.match.url}/Skills`}>Skills</Link></Button>
               <Button
-                type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Spells</Link></Button>
+                type='button' bsSize='large' disabled><Link id='editSpells-link' to='/' style={{pointerEvents: 'none'}}>Spells</Link></Button>
               <Button
                 type='button' bsSize='large'><Link id='editEquipment-link' to={`${this.props.match.url}/Equipment`}>Equipment</Link></Button>
             </Row>
 
             <Row bsClass='text-center'>
               <Button
-                type='button' bsSize='large'><Link to={`${this.props.match.url}/Name`}>Name</Link></Button>
+                type='button' bsSize='large'><Link id='editName-link' to={`${this.props.match.url}/Name`}>Name</Link></Button>
               <Button
-                type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Description</Link></Button>
+                type='button' bsSize='large'><Link id='editDescription-link' to={`${this.props.match.url}/Description`}>Description</Link></Button>
               <Button
                 type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Personality</Link></Button>
             </Row>
@@ -148,6 +149,10 @@ export default class EditCharacter extends Component {
                 activeCharacterName={this.props.activeCharacterName}
                 updateName={this.props.updateName} />)} />
 
+              <Route path={`${this.props.match.url}/Description`} render={props => (<EditDescription {...props}
+                activeCharacterName={this.props.descText}
+                updateDescription={this.props.updateDescription} />)} />
+
             </Well>
           </Col>
 
@@ -178,5 +183,7 @@ EditCharacter.propTypes = {
   dbBackgrounds: PropTypes.object,
   dbEquipment: PropTypes.object,
   updateName: PropTypes.func,
-  activeCharacterName: PropTypes.string
+  activeCharacterName: PropTypes.string,
+  descText: PropTypes.string,
+  updateDescription: PropTypes.func
 }
