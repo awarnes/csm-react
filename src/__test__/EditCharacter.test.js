@@ -116,9 +116,9 @@ describe('EditCharacter', () => {
             match={{params: {uid: 12345}, url: '/characters/12345/edit'}}
             activeCharacter={{charName: 'Apheir'}}
             activeAccount='John'
-            updateActiveCharacter={callback} />
+            updateActiveCharacter={callback}
+            />
         </MemoryRouter>)
-      // app = wrapper.instance()
     })
 
     it('displays the base edit page when at "/characters/:uid/edit"', () => {
@@ -142,6 +142,16 @@ describe('EditCharacter', () => {
     it('displays the EditSkills page when at "/characters/:uid/edit/Skills"', () => {
       wrapper.find('#editSkills-link').simulate('click', {button: 0})
       expect(wrapper.node.history.location.pathname).toEqual('/characters/12345/edit/Skills')
+    })
+
+    it('displays the EditName page when at "/characters/:uid/edit/Name"', () => {
+      wrapper.find('#editName-link').simulate('click', {button: 0})
+      expect(wrapper.node.history.location.pathname).toEqual('/characters/12345/edit/Name')
+    })
+
+    it('displays the EditDescription page when at "/characters/:uid/edit/Description"', () => {
+      wrapper.find('#editDescription-link').simulate('click', {button: 0})
+      expect(wrapper.node.history.location.pathname).toEqual('/characters/12345/edit/Description')
     })
   })
 })
