@@ -129,7 +129,7 @@ export const FAKE_PRESTIGES = {
 
 export const FAKE_BACKGROUNDS = {
   Acolyte: {
-    pTrait: ['I idolize a particular hero of my faith, and constantly refer to their deeds and example.',
+    ptrait: ['I idolize a particular hero of my faith, and constantly refer to their deeds and example.',
       'I can find common ground between the fiercest enemies, empathizing with them and always working toward peace',
       'I see omens in every event and action. The gods try to speak to us, we just need to listen.',
       'Nothing can shake my optimistic attitude.',
