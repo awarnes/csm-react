@@ -69,6 +69,7 @@ export default class App extends Component {
     this.updateName = this.updateName.bind(this)
     this.updateDescription = this.updateDescription.bind(this)
     this.updateSpellBook = this.updateSpellBook.bind(this)
+    this.updatePersonality = this.updatePersonality.bind(this)
 
     this.createCharacter = this.createCharacter.bind(this)
   }
@@ -264,7 +265,6 @@ export default class App extends Component {
   updateSpellBook (spell) {
     const currentCharacter = Object.assign({}, this.state.activeCharacter)
     const newSpells = _.get(currentCharacter, 'spellbook', [])
-
     if (newSpells.indexOf(spell) === -1) {
       newSpells.push(spell)
     } else {
@@ -351,6 +351,23 @@ export default class App extends Component {
           console.log(error)
         })
       })
+    })
+  }
+
+  updatePersonality (words, type) {
+    const newPersonality = Object.assign({}, this.state.activeCharacter.personality, {[type]: words})
+    const newActiveCharacter = Object.assign({}, this.state.activeCharacter, {personality: newPersonality})
+
+    this.setState({activeCharacter: newActiveCharacter}, () => {
+      const putData = {
+        method: 'PUT',
+        body: JSON.stringify(this.state.activeCharacter)
+      }
+
+      fetch(`${SERVER_ROOT}/characters/${this.state.activeCharacterId}.json`, putData)
+        .catch((error) => {
+          console.log(error)
+        })
     })
   }
 
@@ -462,6 +479,7 @@ export default class App extends Component {
               updateDescription={this.updateDescription}
               updateSpellBook={this.updateSpellBook}
               dbSpells={this.state.dbSpells}
+              updatePersonality={this.updatePersonality}
             />)} />
         </div>
       </Router>

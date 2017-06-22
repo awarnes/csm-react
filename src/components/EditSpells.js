@@ -33,12 +33,13 @@ export default class EditSpells extends Component {
   }
 
   renderSpellButtons () {
-    let spellList = this.props.dbSpells.filter((spell) => {
+    const spellList = this.props.dbSpells.filter((spell) => {
       return spell.level === this.state.modalDisplay
     })
-    let spellButtons = spellList.map((spell) => {
-      return <Button id={`${spell.name}-btn`}
-        key={`${spell.name}-btn`}
+    const spellButtons = spellList.map((spell) => {
+      const safeSpellName = `${spell.name}-btn`.replace(/\/s/, '-')
+      return <Button id={safeSpellName}
+        key={safeSpellName}
         onClick={() => {
           this.props.updateSpellBook(`${spell.name}`)
         }}
