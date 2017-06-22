@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-
+import 'airbnb-js-shims' // to allow jest to understand Object.entries for parsing the character objects
+import _ from 'lodash'
 import { Grid, Row, Col, Button, Well } from 'react-bootstrap'
 import { Link, Route } from 'react-router-dom'
 
@@ -17,6 +18,8 @@ import EditPersonality from './EditPersonality'
 
 import { BASE_ABILITY_SCORES } from '../utils'
 
+const CHARACTER_TRAITS = ['abilityScores', 'race', 'subrace', 'klass', 'prestige', 'background', 'skills', 'equipment', 'spellbook', 'personality']
+
 export default class EditCharacter extends Component {
   constructor (props) {
     super(props)
@@ -25,7 +28,21 @@ export default class EditCharacter extends Component {
   }
 
   renderCharacterSummary () {
-    return 'Hello!'
+    let info
+    const summary = CHARACTER_TRAITS.map((trait) => {
+      if (typeof _.get(this.props.activeCharacter, trait, '') === 'object') {
+        info = Object.keys(_.get(this.props.activeCharacter, trait, [])).map((key) => {
+          return <p key={`${trait}-${key}-info`}>{key}: {_.get(this.props.activeCharacter, [trait, key], '')}</p>
+        })
+      } else {
+        info = <p key={`${trait}-info`}>{trait}: {_.get(this.props.activeCharacter, trait, '')}</p>
+      }
+
+      return <div key={`${trait}-info`}>
+        {info}
+      </div>
+    })
+    return summary
   }
 
   componentWillMount () {
@@ -105,7 +122,7 @@ export default class EditCharacter extends Component {
 
             <Row bsClass='text-center'>
               <Button
-                type='button' bsSize='large' disabled><Link to='/' style={{pointerEvents: 'none'}}>Finalize</Link></Button>
+                type='button' bsSize='large'><Link to={`/users/${this.props.activeAccount}/home`}>Finalize</Link></Button>
               <Button
                 type='button' bsSize='large'><Link to={`/users/${this.props.activeAccount}/home`}>Back</Link></Button>
             </Row>

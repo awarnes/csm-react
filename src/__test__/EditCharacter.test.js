@@ -84,7 +84,7 @@ describe('EditCharacter', () => {
   })
 
   describe('the summary section', () => {
-    let wrapper, callback, app
+    let wrapper, callback
 
     beforeEach(() => {
       callback = jest.fn()
@@ -93,15 +93,10 @@ describe('EditCharacter', () => {
         activeCharacter={{charName: 'Apheir'}}
         activeAccount='John'
         updateActiveCharacter={callback} />)
-      app = wrapper.instance()
     })
 
     it('displays the character name when the page loads', () => {
       expect(wrapper.find('#characterName').text()).toEqual('Apheir')
-    })
-
-    it('displays a welcome message when the page loads', () => {
-      expect(app.renderCharacterSummary()).toEqual('Hello!')
     })
   })
 
